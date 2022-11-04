@@ -1,12 +1,16 @@
 package com.ehei.tpms.server.model
 
-import org.springframework.data.annotation.Id
-import java.util.*
+import javax.persistence.*
 
+@Entity
 data class Instructor(
-    @Id
-    val id: UUID,
+    @javax.persistence.Id
+    @GeneratedValue
+    val id: Long,
     val name: String,
     val phoneNumber: String,
-    val emailAddress: String
-    )
+    val emailAddress: String,
+
+    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val course: List<Course>
+)

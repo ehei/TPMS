@@ -1,13 +1,20 @@
 package com.ehei.tpms.server.model
 
-import org.springframework.data.annotation.Id
-import java.util.*
+import net.minidev.json.annotate.JsonIgnore
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.OneToMany
 
+@Entity
 data class Term (
-    @Id
-    val id: UUID,
+    @javax.persistence.Id
+    @GeneratedValue
+    val id: Long,
     val startDate: String,
     val endDate: String,
     val title: String,
-    val courses: MutableSet<Course>
+
+    @JsonIgnore
+    @OneToMany
+    val courses: List<Course>
     )

@@ -1,14 +1,29 @@
 package com.ehei.tpms.server.model
 
-import org.springframework.data.annotation.Id
-import java.util.*
+import net.minidev.json.annotate.JsonIgnore
+import javax.persistence.*
 
-class Course (
-    @Id
-    val id: UUID,
+@Entity
+data class Course (
+    @javax.persistence.Id
+    @GeneratedValue
+    val id: Long,
     val title: String,
     val status: CourseStatus,
-    val instructors: MutableSet<Instructor>,
-    val assessments: MutableSet<Assessment>,
-    val notes: MutableList<String>
-)
+
+    @JsonIgnore
+    @OneToMany
+    val instructors: List<Instructor>,
+
+    @JsonIgnore
+    @OneToMany
+    val assessments: List<Assessment>,
+
+    @JsonIgnore
+    @OneToMany
+    val notes: List<Note>,
+
+    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    val term: Term
+) {
+}

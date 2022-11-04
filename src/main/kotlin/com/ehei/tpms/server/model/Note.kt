@@ -3,12 +3,11 @@ package com.ehei.tpms.server.model
 import javax.persistence.*
 
 @Entity
-data class Assessment (
+data class Note (
     @javax.persistence.Id
     @GeneratedValue
     val id: Long,
-    val title: String,
-    val performance: Boolean,
+    val text: String,
 
     @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     val course: Course
