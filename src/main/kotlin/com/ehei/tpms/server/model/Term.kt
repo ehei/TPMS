@@ -29,6 +29,8 @@ data class Term (
         }
     }
 
+    fun isDeletable(): Boolean = courses.isEmpty()
+
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null

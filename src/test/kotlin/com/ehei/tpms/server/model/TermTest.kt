@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class TermTest {
-
     @Test
     internal fun `Add updates course`() {
 
@@ -64,5 +63,21 @@ class TermTest {
         term.add(course)
 
         assertThat(course.term).isEqualTo(term2)
+    }
+
+    @Test
+    fun `isDeletable returns true if there are no associated courses`() {
+        val term = Term("Feb 1, 2022", "Jul 2, 2022", "term 1")
+
+        assertThat(term.isDeletable()).isTrue
+    }
+
+    @Test
+    fun `isDeletable returns false if there are associated courses`() {
+        val course = Course("course name", CourseStatus.PlanToTake)
+        val term = Term("Feb 1, 2022", "Jul 2, 2022", "term 1")
+        term.add(course)
+
+        assertThat(term.isDeletable()).isFalse
     }
 }
