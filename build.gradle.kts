@@ -22,7 +22,6 @@ plugins {
 
 group = "com.ehei.tpms"
 version = "0.0.1-SNAPSHOT"
-base { archivesBaseName = "TPMS" }
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 jacoco {
@@ -52,6 +51,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.junit.jupiter:junit-jupiter-api")

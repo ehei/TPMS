@@ -3,12 +3,15 @@ package com.ehei.tpms.server.model
 import javax.persistence.*
 
 @Entity
-data class Note (
-    @javax.persistence.Id
-    @GeneratedValue
-    val id: Long,
-    val text: String,
+class Note (
+    @Column(nullable = false)
+    val text: String = "",
 
-    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-    val course: Course
-)
+    @ManyToOne
+    @JoinColumn(name = "fk_course")
+    var course: Course? = null
+) {
+    @javax.persistence.Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null
+}
