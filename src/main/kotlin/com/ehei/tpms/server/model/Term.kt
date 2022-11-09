@@ -5,9 +5,9 @@ import javax.persistence.*
 
 @Entity
 data class Term (
-    val startDate: String,
-    val endDate: String,
-    val title: String,
+    var title: String,
+    var startDate: String,
+    var endDate: String,
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], mappedBy = "id")
@@ -28,8 +28,6 @@ data class Term (
             course.term = null
         }
     }
-
-    fun isDeletable(): Boolean = courses.isEmpty()
 
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
