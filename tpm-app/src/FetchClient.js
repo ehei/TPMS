@@ -30,6 +30,18 @@ const httpClient = springHttpClient(async (url, options = {}) => {
   }
 }
  */
+            let translatedResponse =
+                {
+                    json:
+                        {
+                            content: response.json._embedded.terms,
+                            totalElements: response.json.page.totalElements
+                        }
+                };
+
+            console.log(translatedResponse);
+
+            return translatedResponse;
             // is it worth trying to convert
             // OR
             // just add new endpoints that return the correct format?
