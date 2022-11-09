@@ -9,27 +9,6 @@ const httpClient = springHttpClient(async (url, options = {}) => {
             console.log(response.body);
             console.log(response.json);
 
-/*
-{
-  "_embedded" : {
-    "terms" : [ ]
-  },
-  "_links" : {
-    "self" : {
-      "href" : "http://localhost:8080/terms?page=0&size=10&sort=id%2CASC"
-    },
-    "profile" : {
-      "href" : "http://localhost:8080/profile/terms"
-    }
-  },
-  "page" : {
-    "size" : 10,
-    "totalElements" : 0,
-    "totalPages" : 0,
-    "number" : 0
-  }
-}
- */
             let translatedResponse =
                 {
                     json:
@@ -42,10 +21,6 @@ const httpClient = springHttpClient(async (url, options = {}) => {
             console.log(translatedResponse);
 
             return translatedResponse;
-            // is it worth trying to convert
-            // OR
-            // just add new endpoints that return the correct format?
-            // { data: {Record[]}, total: {int} }
         })
 });
 
