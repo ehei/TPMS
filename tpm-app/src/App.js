@@ -5,7 +5,6 @@ import httpClient from "./FetchClient";
 
 const dataProvider = springDataProvider('http://localhost:8080', httpClient);
 
-
 const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="terms" list={ListGuesser} />
