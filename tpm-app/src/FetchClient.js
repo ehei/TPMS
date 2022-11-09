@@ -9,18 +9,19 @@ const httpClient = springHttpClient(async (url, options = {}) => {
             console.log(response.body);
             console.log(response.json);
 
-            let translatedResponse =
-                {
-                    json:
-                        {
-                            content: response.json._embedded.terms,
-                            totalElements: response.json.page.totalElements
-                        }
-                };
-
-            console.log(translatedResponse);
-
-            return translatedResponse;
+            // let translatedResponse =
+            //     {
+            //         json:
+            //             {
+            //                 content: response.json._embedded.terms,
+            //                 totalElements: response.json.page.totalElements
+            //             }
+            //     };
+            //
+            // console.log(translatedResponse);
+            //
+            // return translatedResponse;
+            return response;
         })
 });
 

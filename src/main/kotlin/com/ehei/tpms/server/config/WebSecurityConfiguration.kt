@@ -27,6 +27,7 @@ class OpenEndpointSecurityConfiguration {
             .requestMatchers(EndpointRequest.to(*UNAUTHENTICATED_ENDPOINTS))
             .permitAll()
             .antMatchers("/**").permitAll()
+            .antMatchers("/api/**").permitAll()
             .and()
             .build()
 
