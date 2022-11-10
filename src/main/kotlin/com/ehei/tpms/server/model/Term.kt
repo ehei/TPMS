@@ -5,6 +5,10 @@ import javax.persistence.*
 
 @Entity
 data class Term (
+    @javax.persistence.Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null,
+
     var title: String,
     var startDate: String,
     var endDate: String,
@@ -28,8 +32,4 @@ data class Term (
             course.term = null
         }
     }
-
-    @javax.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
 }

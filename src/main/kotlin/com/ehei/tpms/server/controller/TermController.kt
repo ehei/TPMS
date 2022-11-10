@@ -4,17 +4,17 @@ import JsonListResponse
 import com.ehei.tpms.server.datastore.TermRepository
 import com.ehei.tpms.server.model.EditableTerm
 import com.ehei.tpms.server.model.Term
+import com.ehei.tpms.server.model.TermBody
 import net.minidev.json.JSONObject
+import org.springframework.boot.json.GsonJsonParser
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.client.HttpClientErrorException
-import java.net.http.HttpResponse
 import java.util.*
 
 @RestController
 @RequestMapping("api/terms")
+@CrossOrigin("*")
 class TermController(
     val termRepository: TermRepository
 ) {
@@ -62,6 +62,27 @@ class TermController(
         }
 
         val saved = termRepository.saveAndFlush(term1)
+
+        return EditableTerm(
+            id = saved.id.toString(),
+            title = saved.title,
+            startDate = saved.startDate,
+            endDate = saved.endDate)
+    }
+
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    @CrossOrigin("*")
+    fun insert(body: TermBody): EditableTerm {
+
+        val newTerm = Term(
+            title = body.title,
+            startDate = body.startDate,
+            endDate = body.endDate
+        )
+
+        val saved = termRepository.saveAndFlush(newTerm)
 
         return EditableTerm(
             id = saved.id.toString(),

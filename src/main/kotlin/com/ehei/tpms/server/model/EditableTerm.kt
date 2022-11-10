@@ -6,3 +6,9 @@ class EditableTerm (
     var startDate: String = "",
     var endDate: String = ""
 )
+
+class TermBody (
+    var title: String = "",
+    var startDate: String = "",
+    var endDate: String = ""
+)

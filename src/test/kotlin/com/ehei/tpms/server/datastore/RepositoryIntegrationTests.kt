@@ -36,7 +36,7 @@ class RepositoryIntegrationTests(
         course2.add(Assessment("assessment 1", false))
         course2.add(Assessment("assessment 2nd", true))
 
-        val term = Term(startDate.convertToString(), endDate.convertToString(), "TheFirstTerm")
+        val term = Term(startDate = startDate.convertToString(), endDate = endDate.convertToString(), title = "TheFirstTerm")
 
         term.add(course1)
         term.add(course2)
