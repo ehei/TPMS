@@ -1,11 +1,11 @@
-import { Edit, SimpleForm, TextInput } from 'react-admin';
+import {Edit, EmailField, SimpleForm, TextInput} from 'react-admin';
 
 export const InstructorEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput source="name" />
             <TextInput source="phoneNumber" />
-            <TextInput source="emailAddress" />
+            <EmailField source="emailAddress" />
         </SimpleForm>
     </Edit>
 );

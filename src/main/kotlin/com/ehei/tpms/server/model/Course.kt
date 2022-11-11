@@ -10,11 +10,14 @@ class Course(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: String? = null,
+    var id: Long? = null,
 
+    @Column(length = 200)
     var title: String,
     var status: CourseStatus = CourseStatus.PlanToTake,
+    @Column(length = 50)
     var startDate: String? = null,
+    @Column(length = 50)
     var endDate: String? = null,
 
     @JsonIgnore
@@ -34,6 +37,7 @@ class Course(
     var notes: MutableSet<Note> = mutableSetOf(),
 
     @ManyToOne
+    @JoinColumn(name = "fk_term")
     var term: Term? = null
 ) {
     fun add(note: Note) {

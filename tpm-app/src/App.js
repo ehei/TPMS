@@ -1,15 +1,18 @@
 import * as React from "react";
 import { Admin, Resource, CreateButton, ListGuesser, ShowGuesser, EditGuesser } from 'react-admin';
-import {springDataProvider, springHttpClient} from 'ra-data-spring-rest';
 import httpClient from "./FetchClient";
-import {TermList} from "./TermList";
-import {TermShow} from "./TermShow";
-import {TermEdit} from "./TermEdit";
-import {TermCreate} from "./TermCreate";
-import {InstructorList} from "./InstructorList";
-import {InstructorEdit} from "./InstructorEdit";
-import {InstructorShow} from "./InstructorShow";
-import {InstructorCreate} from "./InstructorCreate";
+import {InstructorList} from "./instructors/List";
+import {InstructorEdit} from "./instructors/Edit";
+import {InstructorShow} from "./instructors/Show";
+import {InstructorCreate} from "./instructors/Create";
+import {TermList} from "./terms/List";
+import {TermShow} from "./terms/Show";
+import {TermEdit} from "./terms/Edit";
+import {TermCreate} from "./terms/Create";
+import {AssessmentList} from "./assessments/List";
+import {AssessmentShow} from "./assessments/Show";
+import {AssessmentEdit} from "./assessments/Edit";
+import {AssessmentCreate} from "./assessments/Create";
 
 const dataProvider = httpClient('http://localhost:8080');
 
@@ -17,7 +20,8 @@ const App = () => (
     <Admin dataProvider={dataProvider}  >
         <Resource name="terms" list={TermList} show={TermShow} edit={TermEdit} create={TermCreate} />
         <Resource name="instructors" list={InstructorList} show={InstructorShow} edit={InstructorEdit} create={InstructorCreate} />
+        <Resource name="assessments" list={AssessmentList} show ={AssessmentShow} edit={AssessmentEdit} create={AssessmentCreate} />
     </Admin>
-    );
+);
 
 export default App;

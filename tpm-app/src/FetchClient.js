@@ -107,6 +107,29 @@ export default (apiUrl, httpClient = fetch) => {
                             return stuff;
                         }
                         break;
+                    case "assessments":
+                        format = response => {
+                            console.log(response);
+                            console.log(response.body);
+                            console.log(response.json);
+
+                            let mapped = _.map(response.json._embedded.assessments, (item) => {
+                                let id = _.last(_.split(item._links.self.href, '/'))
+                                return {
+                                    id: `${id}`,
+                                    title: `${item.title}`,
+                                    startDate: `${item.startDate}`,
+                                    endDate: `${item.endDate}`,
+                                    performance: `${item.performance}` == 'true' ? true: false
+                                };
+                            });
+
+                            let stuff = {data : mapped, total: response.json.page.totalElements};
+                            console.log(stuff);
+
+                            return stuff;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -138,6 +161,16 @@ export default (apiUrl, httpClient = fetch) => {
                                     name: `${item.name}`,
                                     phoneNumber: `${item.phoneNumber}`,
                                     emailAddress: `${item.emailAddress}`
+                                }
+                            break;
+                        case "assessments":
+                            data =
+                                {
+                                    id: `${params.id}`,
+                                    title: `${item.title}`,
+                                    startDate: `${item.startDate}`,
+                                    endDate: `${item.endDate}`,
+                                    performance: `${item.performance}` == 'true' ? true: false
                                 }
                             break;
                         default:
@@ -186,6 +219,17 @@ export default (apiUrl, httpClient = fetch) => {
                             emailAddress: `${params.data["emailAddress"]}`,
                         };
                         break;
+                    case "assessments":
+                        console.log("PARAMS DATA = " + params.data["title"]);
+                        console.log("PARAMS DATA = " + params.data["startDate"]);
+                        console.log("PARAMS DATA = " + params.data["endDate"]);
+                        options.body = {
+                            title: `${params.data["title"]}`,
+                            startDate: `${params.data["startDate"]}`,
+                            endDate: `${params.data["endDate"]}`,
+                            performance: `${params.data["performance"]}` == 'true' ? true: false
+                        };
+                        break;
                     default:
                         break;
                 }
@@ -223,6 +267,15 @@ export default (apiUrl, httpClient = fetch) => {
                                         emailAddress: `${response.json.emailAddress}`
                                     } };
                                 break;
+                            case "assessments":
+                                returnValue = { data: {
+                                        id: `${id}`,
+                                        title: `${response.json.title}`,
+                                        startDate: `${response.json.startDate}`,
+                                        endDate: `${response.json.endDate}`,
+                                        performance: `${response.json.performance}` == 'true' ? true: false
+                                    } };
+                                break;
                             default:
                                 break;
                         }
@@ -242,9 +295,6 @@ export default (apiUrl, httpClient = fetch) => {
                 console.log("URL = " + url);
                 switch (resource) {
                     case "terms":
-                        console.log("PARAMS DATA = " + params.data["title"]);
-                        console.log("PARAMS DATA = " + params.data["startDate"]);
-                        console.log("PARAMS DATA = " + params.data["endDate"]);
                         options.body = {
                             title: `${params.data["title"]}`,
                             startDate: `${params.data["startDate"]}`,
@@ -252,13 +302,18 @@ export default (apiUrl, httpClient = fetch) => {
                         };
                         break;
                     case "instructors":
-                        console.log("PARAMS DATA = " + params.data["name"]);
-                        console.log("PARAMS DATA = " + params.data["phoneNumber"]);
-                        console.log("PARAMS DATA = " + params.data["emailAddress"]);
                         options.body = {
                             name: `${params.data["name"]}`,
                             phoneNumber: `${params.data["phoneNumber"]}`,
                             emailAddress: `${params.data["emailAddress"]}`,
+                        };
+                        break;
+                    case "assessments":
+                        options.body = {
+                            title: `${params.data["title"]}`,
+                            startDate: `${params.data["startDate"]}`,
+                            endDate: `${params.data["endDate"]}`,
+                            performance: `${params.data["performance"]}`
                         };
                         break;
                     default:
@@ -296,6 +351,15 @@ export default (apiUrl, httpClient = fetch) => {
                                         name: `${response.json.name}`,
                                         phoneNumber: `${response.json.phoneNumber}`,
                                         emailAddress: `${response.json.emailAddress}`
+                                    } };
+                                break;
+                            case "assessments":
+                                returnValue = { data: {
+                                        id: `${id}`,
+                                        title: `${response.json.title}`,
+                                        startDate: `${response.json.startDate}`,
+                                        endDate: `${response.json.endDate}`,
+                                        performance: `${response.json.performance}`
                                     } };
                                 break;
                             default:

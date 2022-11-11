@@ -14,11 +14,7 @@ data class Term (
     var endDate: String? = null,
 
     @JsonIgnore
-    @OneToMany
-    @JoinTable(
-        name = "term_to_courses",
-        joinColumns = [JoinColumn(name = "term_id")],
-        inverseJoinColumns = [JoinColumn(name = "course_id")])
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "id")
     var courses: MutableSet<Course> = mutableSetOf()
     ) {
 
