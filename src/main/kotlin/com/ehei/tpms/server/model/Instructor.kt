@@ -4,15 +4,15 @@ import javax.persistence.*
 
 @Entity
 class Instructor(
-    val name: String,
-    val phoneNumber: String,
-    val emailAddress: String,
+    @javax.persistence.Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null,
+
+    var name: String,
+    var phoneNumber: String,
+    var emailAddress: String,
 
 
     @ManyToMany(mappedBy = "instructors")
     var courses: MutableSet<Course> = mutableSetOf()
-) {
-    @javax.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
-}
+)

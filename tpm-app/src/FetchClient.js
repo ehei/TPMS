@@ -56,45 +56,62 @@ export default (apiUrl, httpClient = fetch) => {
 //            format = response => ({data: response.json});
         switch (type) {
             case GET_LIST:
+                console.log("GET_LIST for " + resource);
+                console.log("URL = " + url);
+
                 options.method = 'GET';
                 options.params = pageParams(params);
-                //format = pageFormat;
-                format = response => {
-                    console.log(response);
-                    console.log(response.body);
-                    console.log(response.json);
 
-                let mapped = _.map(response.json._embedded.terms, (item) => {
-                    let id = _.last(_.split(item._links.self.href, '/'))
-                   return {
-                        id: `${id}`,
-                        title: `${item.title}`,
-                        startDate: `${item.startDate}`,
-                        endDate: `${item.endDate}`,
-                   } ;
-                });
+                switch (resource) {
+                    case "terms":
+                        format = response => {
+                            console.log(response);
+                            console.log(response.body);
+                            console.log(response.json);
 
-                    let stuff = {data : mapped, total: response.json.page.totalElements};
-                    console.log(stuff);
+                            let mapped = _.map(response.json._embedded.terms, (item) => {
+                                let id = _.last(_.split(item._links.self.href, '/'))
+                                return {
+                                    id: `${id}`,
+                                    title: `${item.title}`,
+                                    startDate: `${item.startDate}`,
+                                    endDate: `${item.endDate}`,
+                                };
+                            });
 
-                    return stuff;
+                            let stuff = {data : mapped, total: response.json.page.totalElements};
+                            console.log(stuff);
+
+                            return stuff;
+                        }
+                        break;
+                    case "instructors":
+                        format = response => {
+                            console.log(response);
+                            console.log(response.body);
+                            console.log(response.json);
+
+                            let mapped = _.map(response.json._embedded.instructors, (item) => {
+                                let id = _.last(_.split(item._links.self.href, '/'))
+                                return {
+                                    id: `${id}`,
+                                    name: `${item.name}`,
+                                    phoneNumber: `${item.phoneNumber}`,
+                                    emailAddress: `${item.emailAddress}`,
+                                };
+                            });
+
+                            let stuff = {data : mapped, total: response.json.page.totalElements};
+                            console.log(stuff);
+
+                            return stuff;
+                        }
+                        break;
+                    default:
+                        break;
                 }
-                console.log("GET_LIST for " + resource);
-                if (resource === "terms") {
-                    url = `${apiUrl}/${resource}`
-                }
-                console.log("URL = " + url);
-                 return fetchUtils.fetchJson(url, options).then(format);
-                //     .then(response => {
-                //         console.log(response.status);
-                //         console.log(response.body);
-                //         console.log(response.json);
-                //         let stuff = {data: response.json};
-                //         console.log(stuff);
-                //         return stuff;
-                //     })
 
-                // break;
+                return fetchUtils.fetchJson(url, options).then(format);
             case GET_ONE:
                 options.method = 'GET';
                 url += `/${params.id}`;
@@ -102,13 +119,33 @@ export default (apiUrl, httpClient = fetch) => {
                     let item = response.json;
                     console.log("GET_ONE = " + item);
 
+                    let data = {};
+
+                    switch (resource) {
+                        case "terms":
+                        data =
+                            {
+                                id: `${params.id}`,
+                                title: `${item.title}`,
+                                startDate: `${item.startDate}`,
+                                endDate: `${item.endDate}`
+                            }
+                            break;
+                        case "instructors":
+                            data =
+                                {
+                                    id: `${params.id}`,
+                                    name: `${item.name}`,
+                                    phoneNumber: `${item.phoneNumber}`,
+                                    emailAddress: `${item.emailAddress}`
+                                }
+                            break;
+                        default:
+                            break;
+                    }
+
                     return {
-                        data: {
-                            id: `${params.id}`,
-                            title: `${item.title}`,
-                            startDate: `${item.startDate}`,
-                            endDate: `${item.endDate}`
-                        }
+                        data: data
                     };
                 };
                 return fetchUtils.fetchJson(url, options).then(format);
@@ -127,15 +164,31 @@ export default (apiUrl, httpClient = fetch) => {
                 console.log("CREATE for " + resource);
                 console.log("URL = " + url);
                 options.method = 'POST';
-                console.log("PARAMS DATA = " + params.data["title"]);
-                console.log("PARAMS DATA = " + params.data["startDate"]);
-                console.log("PARAMS DATA = " + params.data["endDate"]);
-                 options.body = {
-                     title: `${params.data["title"]}`,
-                     startDate: `${params.data["startDate"]}`,
-                     endDate: `${params.data["endDate"]}`,
-                 };
-                // options.body = params.data;
+
+                switch (resource) {
+                    case "terms":
+                        console.log("PARAMS DATA = " + params.data["title"]);
+                        console.log("PARAMS DATA = " + params.data["startDate"]);
+                        console.log("PARAMS DATA = " + params.data["endDate"]);
+                        options.body = {
+                            title: `${params.data["title"]}`,
+                            startDate: `${params.data["startDate"]}`,
+                            endDate: `${params.data["endDate"]}`,
+                        };
+                        break;
+                    case "instructors":
+                        console.log("PARAMS DATA = " + params.data["name"]);
+                        console.log("PARAMS DATA = " + params.data["phoneNumber"]);
+                        console.log("PARAMS DATA = " + params.data["emailAddress"]);
+                        options.body = {
+                            name: `${params.data["name"]}`,
+                            phoneNumber: `${params.data["phoneNumber"]}`,
+                            emailAddress: `${params.data["emailAddress"]}`,
+                        };
+                        break;
+                    default:
+                        break;
+                }
                 const requestHeaders = new Headers({
                         Accept: 'application/json',
                     });
@@ -150,12 +203,30 @@ export default (apiUrl, httpClient = fetch) => {
                         console.log("CREATE RESPONSE = " + response.json);
                         let id = _.last(_.split(response.json._links.self.href, '/'))
 
-                        let returnValue = { data: {
-                                id: `${id}`,
-                                title: `${response.json.title}`,
-                                startDate: `${response.json.startDate}`,
-                                endDate: `${response.json.endDate}`,
-                            } };
+                        let returnValue = {};
+
+                        switch (resource) {
+                            case "terms":
+                                returnValue = { data: {
+                                        id: `${id}`,
+                                        title: `${response.json.title}`,
+                                        startDate: `${response.json.startDate}`,
+                                        endDate: `${response.json.endDate}`,
+                                    } };
+                                break;
+                            case "instructors":
+                                returnValue =
+                                    { data: {
+                                        id: `${id}`,
+                                        name: `${response.json.name}`,
+                                        phoneNumber: `${response.json.phoneNumber}`,
+                                        emailAddress: `${response.json.emailAddress}`
+                                    } };
+                                break;
+                            default:
+                                break;
+                        }
+
                         console.log(returnValue);
 
                         return returnValue;
@@ -169,17 +240,30 @@ export default (apiUrl, httpClient = fetch) => {
 
                 console.log("UPDATE for " + resource);
                 console.log("URL = " + url);
-                console.log("PARAMS DATA = " + params.data["id"]);
-                console.log("PARAMS DATA = " + params.data["title"]);
-                console.log("PARAMS DATA = " + params.data["startDate"]);
-                console.log("PARAMS DATA = " + params.data["endDate"]);
-                options.body = {
-                    //id: `${params.data["id"]}`,
-                    title: `${params.data["title"]}`,
-                    startDate: `${params.data["startDate"]}`,
-                    endDate: `${params.data["endDate"]}`,
-                };
-                // options.body = params.data;
+                switch (resource) {
+                    case "terms":
+                        console.log("PARAMS DATA = " + params.data["title"]);
+                        console.log("PARAMS DATA = " + params.data["startDate"]);
+                        console.log("PARAMS DATA = " + params.data["endDate"]);
+                        options.body = {
+                            title: `${params.data["title"]}`,
+                            startDate: `${params.data["startDate"]}`,
+                            endDate: `${params.data["endDate"]}`,
+                        };
+                        break;
+                    case "instructors":
+                        console.log("PARAMS DATA = " + params.data["name"]);
+                        console.log("PARAMS DATA = " + params.data["phoneNumber"]);
+                        console.log("PARAMS DATA = " + params.data["emailAddress"]);
+                        options.body = {
+                            name: `${params.data["name"]}`,
+                            phoneNumber: `${params.data["phoneNumber"]}`,
+                            emailAddress: `${params.data["emailAddress"]}`,
+                        };
+                        break;
+                    default:
+                        break;
+                }
                 const requestHeaders2 = new Headers({
                     Accept: 'application/json',
                 });
@@ -194,13 +278,29 @@ export default (apiUrl, httpClient = fetch) => {
                         console.log("CREATE UPDATE RESPONSE = " + response.json);
                         let id = _.last(_.split(response.json._links.self.href, '/'))
 
-                        let returnValue = { data: {
-                                id: `${id}`,
-                                title: `${response.json.title}`,
-                                startDate: `${response.json.startDate}`,
-                                endDate: `${response.json.endDate}`,
-                            } };
-                        console.log(returnValue);
+                        let returnValue = {};
+
+                        switch (resource) {
+                            case "terms":
+                                returnValue = { data: {
+                                        id: `${id}`,
+                                        title: `${response.json.title}`,
+                                        startDate: `${response.json.startDate}`,
+                                        endDate: `${response.json.endDate}`,
+                                    } };
+                                break;
+                            case "instructors":
+                                returnValue =
+                                    { data: {
+                                        id: `${id}`,
+                                        name: `${response.json.name}`,
+                                        phoneNumber: `${response.json.phoneNumber}`,
+                                        emailAddress: `${response.json.emailAddress}`
+                                    } };
+                                break;
+                            default:
+                                break;
+                        }
 
                         return returnValue;
                     }

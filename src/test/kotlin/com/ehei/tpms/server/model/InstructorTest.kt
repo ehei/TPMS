@@ -7,7 +7,7 @@ class InstructorTest {
     @Test
     internal fun `Constructor sets fields and courses defaults to empty set`() {
 
-        val instructor = Instructor("name", "phone", "email")
+        val instructor = Instructor(name = "name", phoneNumber = "phone", emailAddress = "email")
 
         assertThat(instructor.name).isEqualTo("name")
         assertThat(instructor.phoneNumber).isEqualTo("phone")

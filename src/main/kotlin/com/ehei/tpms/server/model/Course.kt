@@ -6,9 +6,16 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class Course (
-    val title: String,
-    val status: CourseStatus,
+class Course(
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: String? = null,
+
+    var title: String,
+    var status: CourseStatus = CourseStatus.PlanToTake,
+    var startDate: String? = null,
+    var endDate: String? = null,
 
     @JsonIgnore
     @ManyToMany
@@ -20,14 +27,13 @@ class Course (
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], mappedBy = "id")
-    val assessments: MutableSet<Assessment> = mutableSetOf(),
+    var assessments: MutableSet<Assessment> = mutableSetOf(),
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], mappedBy = "id")
-    val notes: MutableSet<Note> = mutableSetOf(),
+    var notes: MutableSet<Note> = mutableSetOf(),
 
     @ManyToOne
-    @JoinColumn(name = "fk_term")
     var term: Term? = null
 ) {
     fun add(note: Note) {
@@ -71,8 +77,4 @@ class Course (
             instructor.courses.remove(this)
         }
     }
-
-    @javax.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
 }

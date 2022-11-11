@@ -10,12 +10,16 @@ data class Term (
     var id: Long? = null,
 
     var title: String,
-    var startDate: String,
-    var endDate: String,
+    var startDate: String? = null,
+    var endDate: String? = null,
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], mappedBy = "id")
-    val courses: MutableSet<Course> = mutableSetOf()
+    @OneToMany
+    @JoinTable(
+        name = "term_to_courses",
+        joinColumns = [JoinColumn(name = "term_id")],
+        inverseJoinColumns = [JoinColumn(name = "course_id")])
+    var courses: MutableSet<Course> = mutableSetOf()
     ) {
 
     fun add(course: Course) {

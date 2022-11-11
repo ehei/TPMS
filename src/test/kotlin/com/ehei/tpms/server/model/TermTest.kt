@@ -7,7 +7,7 @@ class TermTest {
     @Test
     internal fun `Add updates course`() {
 
-        val course = Course("course name", CourseStatus.PlanToTake)
+        val course = Course(title = "course name", status = CourseStatus.PlanToTake)
         val term = Term(startDate = "Feb 1, 2022", endDate = "Jul 2, 2022", title = "term 1")
 
         term.add(course)
@@ -19,7 +19,7 @@ class TermTest {
     @Test
     internal fun `Remove updates course`() {
 
-        val course = Course("course name", CourseStatus.PlanToTake)
+        val course = Course(title = "course name", status = CourseStatus.PlanToTake)
         val term = Term(startDate = "Feb 1, 2022", endDate = "Jul 2, 2022", title = "term 1")
 
         term.add(course)
@@ -31,7 +31,7 @@ class TermTest {
 
     @Test
     internal fun `If course to remove is not in the term, do nothing`() {
-        val course = Course("course name", CourseStatus.PlanToTake)
+        val course = Course(title = "course name", status = CourseStatus.PlanToTake)
         val term = Term(startDate = "Feb 1, 2022", endDate = "Jul 2, 2022", title = "term 1")
         val term2 = Term(startDate = "Feb 1, 2022", endDate = "Jul 2, 2022", title = "term 2")
 
@@ -44,7 +44,7 @@ class TermTest {
 
     @Test
     internal fun `If course to add is already in the term, do nothing`() {
-        val course = Course("course name", CourseStatus.PlanToTake)
+        val course = Course(title = "course name", status = CourseStatus.PlanToTake)
         val term = Term(startDate = "Feb 1, 2022", endDate = "Jul 2, 2022", title = "term 1")
 
         term.add(course)
@@ -55,7 +55,7 @@ class TermTest {
 
     @Test
     internal fun `If course belongs to another term, do nothing`() {
-        val course = Course("course name", CourseStatus.PlanToTake)
+        val course = Course(title = "course name", status = CourseStatus.PlanToTake)
         val term = Term(startDate = "Feb 1, 2022", endDate = "Jul 2, 2022", title = "term 1")
         val term2 = Term(startDate = "Feb 1, 2022", endDate = "Jul 2, 2022", title = "term 2")
 

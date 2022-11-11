@@ -7,19 +7,19 @@ class CourseTest {
 
     @Test
     fun `Setting children sets Course as the parent`() {
-        val course = Course("title of course", CourseStatus.PlanToTake)
+        val course = Course(title = "title of course", status = CourseStatus.PlanToTake)
 
         val note1 = Note("note 1")
         course.add(note1)
         val note2 = Note("note 2")
         course.add(note2)
 
-        val assessment1 = Assessment("assessment 1", false)
+        val assessment1 = Assessment(title = "assessment 1", performance = false)
         course.add(assessment1)
-        val assessment2 = Assessment("assessment 2", true)
+        val assessment2 = Assessment(title = "assessment 2", performance = true)
         course.add(assessment2)
 
-        val instructor = Instructor("instructor 1", "123123123", "123123@gmail.com")
+        val instructor = Instructor(name = "instructor 1", phoneNumber = "123123123", emailAddress = "123123@gmail.com")
         course.add(instructor)
 
         assertThat(course.title).isEqualTo("title of course")
@@ -42,19 +42,19 @@ class CourseTest {
 
     @Test
     fun `Removing children removes Course as the parent`() {
-        val course = Course("title of course", CourseStatus.PlanToTake)
+        val course = Course(title = "title of course", status = CourseStatus.PlanToTake)
 
         val note1 = Note("note 1")
         course.add(note1)
         val note2 = Note("note 2")
         course.add(note2)
 
-        val assessment1 = Assessment("assessment 1", false)
+        val assessment1 = Assessment(title = "assessment 1", performance = false)
         course.add(assessment1)
-        val assessment2 = Assessment("assessment 2", true)
+        val assessment2 = Assessment(title = "assessment 2", performance = true)
         course.add(assessment2)
 
-        val instructor = Instructor("instructor 1", "123123123", "123123@gmail.com")
+        val instructor = Instructor(name = "instructor 1", phoneNumber = "123123123", emailAddress = "123123@gmail.com")
         course.add(instructor)
 
         course.remove(note1)
@@ -77,20 +77,20 @@ class CourseTest {
 
     @Test
     fun `Skip manipulating items that are not owned by this course`() {
-        val course = Course("title of course", CourseStatus.PlanToTake)
-        val course2 = Course("title of course 2", CourseStatus.Completed)
+        val course = Course(title = "title of course")
+        val course2 = Course(title = "title of course 2")
 
         val note1 = Note("note 1")
         course.add(note1)
         val note2 = Note("note 2")
         course2.add(note2)
 
-        val assessment1 = Assessment("assessment 1", false)
+        val assessment1 = Assessment(title = "assessment 1")
         course2.add(assessment1)
-        val assessment2 = Assessment("assessment 2", true)
+        val assessment2 = Assessment(title = "assessment 2")
         course.add(assessment2)
 
-        val instructor = Instructor("instructor 1", "123123123", "123123@gmail.com")
+        val instructor = Instructor(name = "instructor 1", phoneNumber = "123123123", emailAddress = "123123@gmail.com")
         course2.add(instructor)
 
         course.remove(note1)
@@ -117,20 +117,20 @@ class CourseTest {
 
     @Test
     fun `Cannot add the same object twice`() {
-        val course = Course("title of course", CourseStatus.PlanToTake)
+        val course = Course(title = "title of course")
 
         val note1 = Note("note 1")
         course.add(note1)
         course.add(note1)
 
-        val assessment1 = Assessment("assessment 1", false)
+        val assessment1 = Assessment(title = "assessment 1")
         course.add(assessment1)
         course.add(assessment1)
-        val assessment2 = Assessment("assessment 2", true)
+        val assessment2 = Assessment(title = "assessment 2")
         course.add(assessment2)
         course.add(assessment2)
 
-        val instructor = Instructor("instructor 1", "123123123", "123123@gmail.com")
+        val instructor = Instructor(name = "instructor 1", phoneNumber = "123123123", emailAddress = "123123@gmail.com")
         course.add(instructor)
         course.add(instructor)
 
@@ -141,11 +141,15 @@ class CourseTest {
 
     @Test
     fun `instructors can be added to multiple courses at the same time`() {
-        val course = Course("title of course", CourseStatus.PlanToTake)
-        val course2 = Course("title of course 2", CourseStatus.Completed)
+        val course = Course(title = "title of course")
+        val course2 = Course(title = "title of course 2")
 
-        val instructor1 = Instructor("instructor 1", "123123123", "123123@gmail.com")
-        val instructor2 = Instructor("instructor 2", "123123123", "123123@gmail.com")
+        val instructor1 = Instructor(name = "instructor 1", phoneNumber = "123123123",
+            emailAddress = "123123@gmail.com"
+        )
+        val instructor2 = Instructor(name = "instructor 2", phoneNumber = "123123123",
+            emailAddress = "123123@gmail.com"
+        )
 
         course.add(instructor1)
         course.add(instructor2)
@@ -162,17 +166,17 @@ class CourseTest {
 
     @Test
     internal fun `Notes and Assessments can be swapped between courses`() {
-        val course = Course("title of course", CourseStatus.PlanToTake)
-        val course2 = Course("title of course 2", CourseStatus.Completed)
+        val course = Course(title = "title of course")
+        val course2 = Course(title = "title of course 2")
 
         val note1 = Note("note 1")
         course.add(note1)
         val note2 = Note("note 2")
         course2.add(note2)
 
-        val assessment1 = Assessment("assessment 1", false)
+        val assessment1 = Assessment(title = "assessment 1", performance = false)
         course.add(assessment1)
-        val assessment2 = Assessment("assessment 2", true)
+        val assessment2 = Assessment(title = "assessment 2", performance = true)
         course2.add(assessment2)
 
         course.add(note2)

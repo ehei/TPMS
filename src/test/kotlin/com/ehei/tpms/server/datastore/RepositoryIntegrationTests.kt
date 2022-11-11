@@ -23,18 +23,18 @@ class RepositoryIntegrationTests(
         val note1 = Note("some text")
         val note2 = Note("some more text")
 
-        val course1 = Course("first course", CourseStatus.PlanToTake)
-        val course2 = Course("second course", CourseStatus.Completed)
+        val course1 = Course(title = "first course", status = CourseStatus.PlanToTake)
+        val course2 = Course(title = "second course", status = CourseStatus.Completed)
 
         course1.add(note1)
         course2.add(note2)
 
-        course1.add(Instructor("instruct Or", "123-444-5555", "io@gmail.com"))
+        course1.add(Instructor(name = "instruct Or", phoneNumber = "123-444-5555", emailAddress = "io@gmail.com"))
 
-        course1.add(Assessment("assessment 1-1", false))
+        course1.add(Assessment(title = "assessment 1-1", performance = false))
 
-        course2.add(Assessment("assessment 1", false))
-        course2.add(Assessment("assessment 2nd", true))
+        course2.add(Assessment(title = "assessment 1", performance = false))
+        course2.add(Assessment(title = "assessment 2nd", performance = true))
 
         val term = Term(startDate = startDate.convertToString(), endDate = endDate.convertToString(), title = "TheFirstTerm")
 

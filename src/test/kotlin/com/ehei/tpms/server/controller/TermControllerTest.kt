@@ -73,11 +73,6 @@ class TermControllerTest {
         val savedAndFlushed = termController.update(323, paramMap)
 
         verify(termRepository).findById(323)
-        val saved = argumentCaptor.firstValue
-
-//        assertThat(saved.title).isEqualTo("term 2")
-//        assertThat(saved.startDate).isEqualTo("Aug 1, 2022")
-//        assertThat(saved.endDate).isEqualTo("July 21, 2022")
 
         assertThat(savedAndFlushed.title).isEqualTo("term 2")
         assertThat(savedAndFlushed.startDate).isEqualTo("Aug 1, 2022")
