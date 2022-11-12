@@ -43,7 +43,7 @@ function pageFormat(response) {
  * DELETE               => DELETE http://my.api.url/posts/123
  * DELETE_MANY          => multiple call DELETE
  */
-export default (apiUrl, httpClient = fetch) => {
+const fetch = (apiUrl, httpClient = fetch) => {
     let dataProvider = (type, resource, params) => {
         let url = `${apiUrl}/${resource}`,
             options = {},
@@ -120,11 +120,33 @@ export default (apiUrl, httpClient = fetch) => {
                                     title: `${item.title}`,
                                     startDate: `${item.startDate}`,
                                     endDate: `${item.endDate}`,
-                                    performance: `${item.performance}` == 'true' ? true: false
+                                    performance: `${item.performance}` === 'true' ? true: false
                                 };
                             });
 
                             let stuff = {data : mapped, total: response.json.page.totalElements};
+                            console.log(stuff);
+
+                            return stuff;
+                        }
+                        break;
+                    case "courses":
+                        format = response => {
+                            console.log(response.json);
+
+                            let mapped = _.map(response.json._embedded.courses, (item) => {
+                                let id = _.last(_.split(item._links.self.href, '/'))
+                                return {
+                                    id: `${id}`,
+                                    title: `${item.title}`,
+                                    status: `${item.status}`,
+                                    startDate: `${item.startDate}`,
+                                    endDate: `${item.endDate}`
+                                };
+                            });
+
+                            let stuff = {data : mapped, total: response.json.page.totalElements};
+                            console.log("console stuff");
                             console.log(stuff);
 
                             return stuff;
@@ -170,7 +192,17 @@ export default (apiUrl, httpClient = fetch) => {
                                     title: `${item.title}`,
                                     startDate: `${item.startDate}`,
                                     endDate: `${item.endDate}`,
-                                    performance: `${item.performance}` == 'true' ? true: false
+                                    performance: `${item.performance}` === 'true' ? true: false
+                                }
+                            break;
+                        case "courses":
+                            data =
+                                {
+                                    id: `${params.id}`,
+                                    title: `${item.title}`,
+                                    status: `${item.status}`,
+                                    startDate: `${item.startDate}`,
+                                    endDate: `${item.endDate}`
                                 }
                             break;
                         default:
@@ -227,7 +259,15 @@ export default (apiUrl, httpClient = fetch) => {
                             title: `${params.data["title"]}`,
                             startDate: `${params.data["startDate"]}`,
                             endDate: `${params.data["endDate"]}`,
-                            performance: `${params.data["performance"]}` == 'true' ? true: false
+                            performance: `${params.data["performance"]}` === 'true' ? true: false
+                        };
+                        break;
+                    case "courses":
+                        options.body = {
+                            title: `${params.data["title"]}`,
+                            status: `${params.data["status"]}`,
+                            startDate: `${params.data["startDate"]}`,
+                            endDate: `${params.data["endDate"]}`
                         };
                         break;
                     default:
@@ -273,7 +313,16 @@ export default (apiUrl, httpClient = fetch) => {
                                         title: `${response.json.title}`,
                                         startDate: `${response.json.startDate}`,
                                         endDate: `${response.json.endDate}`,
-                                        performance: `${response.json.performance}` == 'true' ? true: false
+                                        performance: `${response.json.performance}` === 'true' ? true: false
+                                    } };
+                                break;
+                            case "courses":
+                                returnValue = { data: {
+                                        id: `${id}`,
+                                        title: `${response.json.title}`,
+                                        status: `${response.json.status}`,
+                                        startDate: `${response.json.startDate}`,
+                                        endDate: `${response.json.endDate}`,
                                     } };
                                 break;
                             default:
@@ -314,6 +363,14 @@ export default (apiUrl, httpClient = fetch) => {
                             startDate: `${params.data["startDate"]}`,
                             endDate: `${params.data["endDate"]}`,
                             performance: `${params.data["performance"]}`
+                        };
+                        break;
+                    case "courses":
+                        options.body = {
+                            title: `${params.data["title"]}`,
+                            status: `${params.data["status"]}`,
+                            startDate: `${params.data["startDate"]}`,
+                            endDate: `${params.data["endDate"]}`,
                         };
                         break;
                     default:
@@ -362,6 +419,15 @@ export default (apiUrl, httpClient = fetch) => {
                                         performance: `${response.json.performance}`
                                     } };
                                 break;
+                            case "courses":
+                                returnValue = { data: {
+                                        id: `${id}`,
+                                        title: `${response.json.title}`,
+                                        status: `${response.json.status}`,
+                                        startDate: `${response.json.startDate}`,
+                                        endDate: `${response.json.endDate}`
+                                    } };
+                                break;
                             default:
                                 break;
                         }
@@ -389,3 +455,5 @@ export default (apiUrl, httpClient = fetch) => {
     };
     return dataProvider;
 };
+
+export default fetch;

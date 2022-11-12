@@ -5,7 +5,7 @@ export const InstructorCreate = () => (
         <SimpleForm>
             <TextInput source="name" />
             <TextInput source="phoneNumber" />
-            <EmailField source="emailAddress" />
+            <TextInput source="emailAddress" />
         </SimpleForm>
     </Create>
 );
