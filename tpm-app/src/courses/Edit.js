@@ -1,4 +1,15 @@
-import {ArrayInput, DateInput, Edit, SelectInput, SimpleForm, SimpleFormIterator, TextInput} from 'react-admin';
+import {
+    ArrayInput,
+    AutocompleteInput,
+    DateInput,
+    Edit,
+    ReferenceInput,
+    SelectInput,
+    SimpleForm,
+    SimpleFormIterator,
+    TextInput,
+    ReferenceArrayInput
+} from 'react-admin';
 
 export const CourseEdit = () => (
     <Edit>
@@ -12,11 +23,11 @@ export const CourseEdit = () => (
             ]} />
             <DateInput source="startDate" />
             <DateInput source="endDate" />
-            <ArrayInput source="notes">
-                <SimpleFormIterator inline>
-                    <TextInput source="text" />
-                </SimpleFormIterator>
-            </ArrayInput>
+            <ReferenceArrayInput
+                source="notes_id"
+                reference="notes">
+                <AutocompleteInput label="Note" />
+            </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
 );

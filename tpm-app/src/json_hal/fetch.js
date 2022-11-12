@@ -63,13 +63,17 @@ var handlingResponse = function handlingResponse(_ref, resource, type) {
         json: setSelfHrefAsID(json)
       };
     case _reactAdmin.GET_LIST:
+      console.log("GET_LIST");
     case _reactAdmin.GET_MANY_REFERENCE:
-      return {
+      console.log("GET_MANY_REFERENCE");
+      let datum = {
         status: status,
         headers: headers,
         body: body,
         json: _extends({}, json, _defineProperty({}, _constants.EMBEDDED_KEY, _defineProperty({}, resource, setIDToResourcesList(json[_constants.EMBEDDED_KEY][resource]))))
       };
+      console.log(datum);
+      return datum;
     case _reactAdmin.GET_MANY:
       return {
         status: status,

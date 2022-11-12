@@ -50,6 +50,11 @@ function getQueryParamsFromReactAdminParams() {
     size: size,
     sort: sort
   }, sort + '.dir', order), filter);
+
+  console.log("create params");
+  console.log(_fetch.queryParameters);
+  console.log(requestParameters);
+  console.log('?' + (0, _fetch.queryParameters)(requestParameters));
   return '?' + (0, _fetch.queryParameters)(requestParameters);
 }
 
@@ -116,6 +121,12 @@ function convertHttpDataProviderRequestToHttpRequest(apiUrl, httpClient, type, r
         }
       };
     case _reactAdmin.GET_MANY_REFERENCE:
+      console.log("GET_MANY_REFERENCE");
+      console.log(apiUrl);
+      console.log(params.target);
+      console.log(params.id);
+      console.log(resource);
+      console.log("==============");
       return {
         url: apiUrl + '/' + params.target + '/' + params.id + '/' + resource + getQueryParamsFromReactAdminParams(params)
       };

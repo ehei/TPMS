@@ -5,7 +5,8 @@ import {
     Show,
     SimpleShowLayout,
     TextField,
-    SimpleList
+    SimpleList,
+    ReferenceManyField
 } from 'react-admin';
 
 export const CourseShow = () => (
@@ -20,6 +21,11 @@ export const CourseShow = () => (
             ]} />
             <DateField source="startDate" />
             <DateField source="endDate" />
+            <ReferenceManyField label="Notes"
+                target="courses"
+                reference="notes">
+                <SimpleList primaryText="text" />
+            </ReferenceManyField>
             <ArrayField source="notes">
                 <SimpleList primaryText={record => record.text}/>
             </ArrayField>
