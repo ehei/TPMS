@@ -13,6 +13,6 @@ data class Term (
     var startDate: String? = null,
     var endDate: String? = null,
 
-    @ElementCollection(targetClass = Course::class)
+    @OneToMany(mappedBy = "term", cascade = [CascadeType.ALL])
     var courses: MutableSet<Course> = mutableSetOf()
 )

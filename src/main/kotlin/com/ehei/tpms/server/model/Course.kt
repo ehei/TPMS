@@ -1,5 +1,6 @@
 package com.ehei.tpms.server.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import javax.persistence.*
 
 @Entity
@@ -26,4 +27,8 @@ class Course(
 
     @ElementCollection
     var notes: MutableSet<String> = mutableSetOf(),
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = ["courses"], allowSetters = true)
+    var term: Term? = null
 )

@@ -1,7 +1,7 @@
 import { Datagrid, List, TextField, EmailField } from 'react-admin';
 
 export const InstructorList = () => (
-    <List hasCreate={true}>
+    <List>
         <Datagrid rowClick="edit">
             <TextField source="name" />
             <TextField source="phoneNumber" />

@@ -53,7 +53,6 @@ const fetch = (apiUrl, httpClient = fetch) => {
                 console.log(response.json);
                 return {data: response.json}
             }
-//            format = response => ({data: response.json});
         switch (type) {
             case GET_LIST:
                 console.log("GET_LIST for " + resource);
@@ -61,6 +60,8 @@ const fetch = (apiUrl, httpClient = fetch) => {
 
                 options.method = 'GET';
                 options.params = pageParams(params);
+
+
 
                 switch (resource) {
                     case "terms":
@@ -71,12 +72,16 @@ const fetch = (apiUrl, httpClient = fetch) => {
 
                             let mapped = _.map(response.json._embedded.terms, (item) => {
                                 let id = _.last(_.split(item._links.self.href, '/'))
-                                return {
-                                    id: `${id}`,
-                                    title: `${item.title}`,
-                                    startDate: `${item.startDate}`,
-                                    endDate: `${item.endDate}`,
-                                };
+
+                                item["id"] = id;
+
+                                // return {
+                                //     id: `${id}`,
+                                //     title: `${item.title}`,
+                                //     startDate: `${item.startDate}`,
+                                //     endDate: `${item.endDate}`,
+                                // };
+                                return item;
                             });
 
                             let stuff = {data : mapped, total: response.json.page.totalElements};
@@ -93,12 +98,15 @@ const fetch = (apiUrl, httpClient = fetch) => {
 
                             let mapped = _.map(response.json._embedded.instructors, (item) => {
                                 let id = _.last(_.split(item._links.self.href, '/'))
-                                return {
-                                    id: `${id}`,
-                                    name: `${item.name}`,
-                                    phoneNumber: `${item.phoneNumber}`,
-                                    emailAddress: `${item.emailAddress}`,
-                                };
+                                item["id"] = id;
+
+                                // return {
+                                //     id: `${id}`,
+                                //     name: `${item.name}`,
+                                //     phoneNumber: `${item.phoneNumber}`,
+                                //     emailAddress: `${item.emailAddress}`,
+                                // };
+                                return item;
                             });
 
                             let stuff = {data : mapped, total: response.json.page.totalElements};
@@ -115,13 +123,15 @@ const fetch = (apiUrl, httpClient = fetch) => {
 
                             let mapped = _.map(response.json._embedded.assessments, (item) => {
                                 let id = _.last(_.split(item._links.self.href, '/'))
-                                return {
-                                    id: `${id}`,
-                                    title: `${item.title}`,
-                                    startDate: `${item.startDate}`,
-                                    endDate: `${item.endDate}`,
-                                    performance: `${item.performance}` === 'true' ? true: false
-                                };
+                                item["id"] = id;
+                                // return {
+                                //     id: `${id}`,
+                                //     title: `${item.title}`,
+                                //     startDate: `${item.startDate}`,
+                                //     endDate: `${item.endDate}`,
+                                //     performance: `${item.performance}` === 'true' ? true: false
+                                // };
+                                return item;
                             });
 
                             let stuff = {data : mapped, total: response.json.page.totalElements};
@@ -136,13 +146,15 @@ const fetch = (apiUrl, httpClient = fetch) => {
 
                             let mapped = _.map(response.json._embedded.courses, (item) => {
                                 let id = _.last(_.split(item._links.self.href, '/'))
-                                return {
-                                    id: `${id}`,
-                                    title: `${item.title}`,
-                                    status: `${item.status}`,
-                                    startDate: `${item.startDate}`,
-                                    endDate: `${item.endDate}`
-                                };
+                                item["id"] = id;
+                                // return {
+                                //     id: `${id}`,
+                                //     title: `${item.title}`,
+                                //     status: `${item.status}`,
+                                //     startDate: `${item.startDate}`,
+                                //     endDate: `${item.endDate}`
+                                // };
+                                return item;
                             });
 
                             let stuff = {data : mapped, total: response.json.page.totalElements};
@@ -155,8 +167,8 @@ const fetch = (apiUrl, httpClient = fetch) => {
                     default:
                         break;
                 }
-
-                return fetchUtils.fetchJson(url, options).then(format);
+                break;
+                //return fetchUtils.fetchJson(url, options).then(format);
             case GET_ONE:
                 options.method = 'GET';
                 url += `/${params.id}`;
@@ -164,36 +176,17 @@ const fetch = (apiUrl, httpClient = fetch) => {
                     let item = response.json;
                     console.log("GET_ONE = " + item);
 
-                    let data = {};
+                    let data = item;
+
+                    data["id"] = params.id;
 
                     switch (resource) {
                         case "terms":
-                        data =
-                            {
-                                id: `${params.id}`,
-                                title: `${item.title}`,
-                                startDate: `${item.startDate}`,
-                                endDate: `${item.endDate}`
-                            }
                             break;
                         case "instructors":
-                            data =
-                                {
-                                    id: `${params.id}`,
-                                    name: `${item.name}`,
-                                    phoneNumber: `${item.phoneNumber}`,
-                                    emailAddress: `${item.emailAddress}`
-                                }
                             break;
                         case "assessments":
-                            data =
-                                {
-                                    id: `${params.id}`,
-                                    title: `${item.title}`,
-                                    startDate: `${item.startDate}`,
-                                    endDate: `${item.endDate}`,
-                                    performance: `${item.performance}` === 'true' ? true: false
-                                }
+                            data.performance = `${item.performance}` === 'true';
                             break;
                         case "courses":
                             console.log("GET ONE courses");
@@ -204,16 +197,18 @@ const fetch = (apiUrl, httpClient = fetch) => {
                                };
                             });
                             console.log(notes);
-
-                            data =
-                                {
-                                    id: `${params.id}`,
-                                    title: `${item.title}`,
-                                    status: `${item.status}`,
-                                    startDate: `${item.startDate}`,
-                                    endDate: `${item.endDate}`,
-                                    notes: notes
-                                }
+                            data.notes = notes;
+                            //
+                            //
+                            // data =
+                            //     {
+                            //         id: `${params.id}`,
+                            //         title: `${item.title}`,
+                            //         status: `${item.status}`,
+                            //         startDate: `${item.startDate}`,
+                            //         endDate: `${item.endDate}`,
+                            //         notes: notes
+                            //     }
 
                             console.log("GET_ONE course fixed");
                             console.log(data);

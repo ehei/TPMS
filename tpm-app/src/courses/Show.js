@@ -3,7 +3,6 @@ import {
     DateField,
     SelectField,
     Show,
-    SingleFieldList,
     SimpleShowLayout,
     TextField,
     SimpleList
