@@ -196,14 +196,27 @@ const fetch = (apiUrl, httpClient = fetch) => {
                                 }
                             break;
                         case "courses":
+                            console.log("GET ONE courses");
+                            console.log(item);
+                            let notes = _.map(item.notes, (it) => {
+                               return {
+                                   text: it
+                               };
+                            });
+                            console.log(notes);
+
                             data =
                                 {
                                     id: `${params.id}`,
                                     title: `${item.title}`,
                                     status: `${item.status}`,
                                     startDate: `${item.startDate}`,
-                                    endDate: `${item.endDate}`
+                                    endDate: `${item.endDate}`,
+                                    notes: notes
                                 }
+
+                            console.log("GET_ONE course fixed");
+                            console.log(data);
                             break;
                         default:
                             break;
@@ -228,6 +241,7 @@ const fetch = (apiUrl, httpClient = fetch) => {
             case CREATE:
                 console.log("CREATE for " + resource);
                 console.log("URL = " + url);
+                console.log(params.data);
                 options.method = 'POST';
 
                 switch (resource) {
@@ -252,9 +266,6 @@ const fetch = (apiUrl, httpClient = fetch) => {
                         };
                         break;
                     case "assessments":
-                        console.log("PARAMS DATA = " + params.data["title"]);
-                        console.log("PARAMS DATA = " + params.data["startDate"]);
-                        console.log("PARAMS DATA = " + params.data["endDate"]);
                         options.body = {
                             title: `${params.data["title"]}`,
                             startDate: `${params.data["startDate"]}`,
@@ -263,11 +274,22 @@ const fetch = (apiUrl, httpClient = fetch) => {
                         };
                         break;
                     case "courses":
+                        console.log("PARAMS DATA title = " + params.data["title"]);
+                        console.log("PARAMS DATA startDate = " + params.data["startDate"]);
+                        console.log("PARAMS DATA endDate = " + params.data["endDate"]);
+                        console.log("PARAMS DATA notes = " + params.data["notes"]);
+
+                        let notes = _.map(params.data["notes"], (item) => {
+                            return item.text
+                        })
+                        console.log("notes = " + notes);
+
                         options.body = {
                             title: `${params.data["title"]}`,
                             status: `${params.data["status"]}`,
                             startDate: `${params.data["startDate"]}`,
-                            endDate: `${params.data["endDate"]}`
+                            endDate: `${params.data["endDate"]}`,
+                            notes: notes
                         };
                         break;
                     default:
@@ -277,6 +299,9 @@ const fetch = (apiUrl, httpClient = fetch) => {
                         Accept: 'application/json',
                     });
                 requestHeaders.set('Content-Type', 'application/json');
+
+                console.log("crafted body stringified");
+                console.log(JSON.stringify(options.body));
 
                 return fetchUtils.fetchJson(url, {
                     body: JSON.stringify(options.body),
@@ -366,11 +391,17 @@ const fetch = (apiUrl, httpClient = fetch) => {
                         };
                         break;
                     case "courses":
+                        let notes = _.map(params.data["notes"], (item) => {
+                            return item.text
+                        })
+                        console.log("notes = " + notes);
+
                         options.body = {
                             title: `${params.data["title"]}`,
                             status: `${params.data["status"]}`,
                             startDate: `${params.data["startDate"]}`,
                             endDate: `${params.data["endDate"]}`,
+                            notes: notes
                         };
                         break;
                     default:

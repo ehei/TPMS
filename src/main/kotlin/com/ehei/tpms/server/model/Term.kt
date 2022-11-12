@@ -13,23 +13,6 @@ data class Term (
     var startDate: String? = null,
     var endDate: String? = null,
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "id")
+    @ElementCollection(targetClass = Course::class)
     var courses: MutableSet<Course> = mutableSetOf()
-    ) {
-
-    fun add(course: Course) {
-
-        if (course.term == null) {
-            courses.add(course)
-            course.term = this
-        }
-    }
-
-    fun remove(course: Course) {
-        if (course.term == this) {
-            courses.remove(course)
-            course.term = null
-        }
-    }
-}
+)

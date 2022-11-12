@@ -1,4 +1,4 @@
-import { Create, SimpleForm, TextInput, SelectInput, DateInput } from 'react-admin';
+import {Create, SimpleForm, TextInput, SelectInput, DateInput, ArrayInput, SimpleFormIterator} from 'react-admin';
 
 export const CourseCreate = () => (
     <Create>
@@ -12,6 +12,11 @@ export const CourseCreate = () => (
             ]} />
             <DateInput source="startDate" />
             <DateInput source="endDate" />
+            <ArrayInput source="notes">
+                <SimpleFormIterator inline>
+                    <TextInput source="text" />
+                </SimpleFormIterator>
+            </ArrayInput>
         </SimpleForm>
     </Create>
 );

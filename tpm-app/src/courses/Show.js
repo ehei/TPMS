@@ -1,4 +1,13 @@
-import {DateField, SelectField, Show, SimpleShowLayout, TextField} from 'react-admin';
+import {
+    ArrayField,
+    DateField,
+    SelectField,
+    Show,
+    SingleFieldList,
+    SimpleShowLayout,
+    TextField,
+    SimpleList
+} from 'react-admin';
 
 export const CourseShow = () => (
     <Show>
@@ -12,6 +21,9 @@ export const CourseShow = () => (
             ]} />
             <DateField source="startDate" />
             <DateField source="endDate" />
+            <ArrayField source="notes">
+                <SimpleList primaryText={record => record.text}/>
+            </ArrayField>
         </SimpleShowLayout>
     </Show>
 );
