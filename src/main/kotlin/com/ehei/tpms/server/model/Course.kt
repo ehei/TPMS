@@ -25,10 +25,11 @@ class Course(
     @ElementCollection(targetClass = Assessment::class)
     var assessments: MutableSet<Assessment> = mutableSetOf(),
 
-    @ElementCollection
-    var notes: MutableSet<String> = mutableSetOf(),
+    @ElementCollection(targetClass = Note::class)
+    var notes: MutableSet<Note> = mutableSetOf(),
 
     @ManyToOne
     @JsonIgnoreProperties(value = ["courses"], allowSetters = true)
+    @JoinColumn(name = "term_id")
     var term: Term? = null
 )

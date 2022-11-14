@@ -1,9 +1,9 @@
 package com.ehei.tpms.server.model
 
-import net.minidev.json.annotate.JsonIgnore
 import javax.persistence.*
 
 @Entity
+@Embeddable
 data class Term (
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
