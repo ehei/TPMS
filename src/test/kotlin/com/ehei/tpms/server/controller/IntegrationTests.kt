@@ -68,9 +68,11 @@ class IntegrationTests {
     }
 
     @Test
-    fun `get without an id gets list of all terms`() {
+    fun `get without an id gets list of all terms and total count in the header`() {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/terms"))
+            .andExpect(header().longValue("X-Total-Count", 3))
+            .andExpect(header().string("Access-Control-Expose-Headers", "X-Total-Count"))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.*").isArray)

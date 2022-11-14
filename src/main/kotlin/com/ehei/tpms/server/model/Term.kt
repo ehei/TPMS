@@ -18,7 +18,7 @@ class Term(
     @ElementCollection
     var courseIds: MutableSet<Long> = mutableSetOf()
 
-) : Serializable {
+): Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Term) return false

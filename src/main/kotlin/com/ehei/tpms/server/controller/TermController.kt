@@ -38,14 +38,18 @@ class TermController(
     @ResponseStatus(OK)
     fun getTerms(): ResponseEntity<List<Term>> {
 
+        val findAll = termRepository.findAll()
 
-        return ResponseEntity.ok(termRepository.findAll())
+        return ResponseEntity.ok()
+            .header("X-Total-Count", "" + findAll.size)
+            .header("Access-Control-Expose-Headers", "X-Total-Count")
+            .body(findAll)
     }
 
     @PostMapping
     @ResponseBody
     @ResponseStatus(OK)
-    fun create(term: Term): ResponseEntity<Term> {
+    fun create(@RequestBody term: Term): ResponseEntity<Term> {
 
         val savedTerm = termRepository.save(term)
 
@@ -55,7 +59,7 @@ class TermController(
     @PutMapping
     @ResponseBody
     @ResponseStatus(OK)
-    fun update(termToUpdate: Term): ResponseEntity<Term> {
+    fun update(@RequestBody termToUpdate: Term): ResponseEntity<Term> {
 
         val savedTerm = termRepository.save(termToUpdate)
 
@@ -64,7 +68,7 @@ class TermController(
 
     @DeleteMapping
     @ResponseStatus(OK)
-    fun delete(termToDelete: Term) {
+    fun delete(@RequestBody termToDelete: Term) {
 
         termRepository.delete(termToDelete)
     }
