@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import kotlin.NoSuchElementException
-
 
 @Controller
 @RequestMapping(path = ["api/terms"])
@@ -30,8 +28,7 @@ class TermController(
             }
 
             return ResponseEntity.ok().body(findById.get())
-        }
-        catch(noSuchElement: NoSuchElementException) {
+        } catch (noSuchElement: NoSuchElementException) {
             return ResponseEntity.notFound().build()
         }
     }
@@ -42,6 +39,33 @@ class TermController(
     fun getTerms(): ResponseEntity<List<Term>> {
 
 
-        return ResponseEntity.ok( termRepository.findAll() )
+        return ResponseEntity.ok(termRepository.findAll())
+    }
+
+    @PostMapping
+    @ResponseBody
+    @ResponseStatus(OK)
+    fun create(term: Term): ResponseEntity<Term> {
+
+        val savedTerm = termRepository.save(term)
+
+        return ResponseEntity.ok(savedTerm)
+    }
+
+    @PutMapping
+    @ResponseBody
+    @ResponseStatus(OK)
+    fun update(termToUpdate: Term): ResponseEntity<Term> {
+
+        val savedTerm = termRepository.save(termToUpdate)
+
+        return ResponseEntity.ok(savedTerm)
+    }
+
+    @DeleteMapping
+    @ResponseStatus(OK)
+    fun delete(termToDelete: Term) {
+
+        termRepository.delete(termToDelete)
     }
 }

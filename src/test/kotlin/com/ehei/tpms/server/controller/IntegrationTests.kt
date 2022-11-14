@@ -2,8 +2,10 @@ package com.ehei.tpms.server.controller
 
 import com.ehei.tpms.server.datastore.TermRepository
 import com.ehei.tpms.server.model.Term
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
@@ -14,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.util.*
+
 
 @WebMvcTest(controllers = [TermController::class], excludeAutoConfiguration = [SecurityAutoConfiguration::class])
 class IntegrationTests {
@@ -27,18 +30,21 @@ class IntegrationTests {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
+    private val term = Term(id = null, title = "create this", startDate = "2022/12/31", endDate = "2023/01/30")
+    private val term1 = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30")
+    private val term2 = Term(id = 2, title = "2nd", startDate = "2022/12/31", endDate = "2023/01/30")
+    private val term3 = Term(id = 3, title = "third", startDate = "2022/12/31", endDate = "2023/01/30")
+
     @BeforeEach
     fun setUp() {
-
-        val term1 = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30")
-        val term2 = Term(id = 2, title = "2nd", startDate = "2022/12/31", endDate = "2023/01/30")
-        val term3 = Term(id = 3, title = "third", startDate = "2022/12/31", endDate = "2023/01/30")
 
         whenever(termRepository.findById(1)).thenReturn(Optional.of(term1))
         whenever(termRepository.findById(2)).thenReturn(Optional.of(term2))
         whenever(termRepository.findById(3)).thenReturn(Optional.of(term3))
 
         whenever(termRepository.findAll()).thenReturn(listOf(term1, term2, term3))
+
+        whenever(termRepository.save(any<Term>())).thenReturn(term1)
     }
 
     @Test
@@ -68,5 +74,56 @@ class IntegrationTests {
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.*").isArray)
+    }
+
+    @Test
+    fun `create does so`() {
+
+        val jsonTerm = ObjectMapper().writeValueAsString(term)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/terms")
+                .content(jsonTerm)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpectAll(
+                status().isOk,
+                content().contentType(MediaType.APPLICATION_JSON),
+                jsonPath("$.title").value("First")
+            )
+    }
+
+    @Test
+    fun `update does so`() {
+
+        val jsonTerm = ObjectMapper().writeValueAsString(term1)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/api/terms")
+                .content(jsonTerm)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpectAll(
+                status().isOk,
+                content().contentType(MediaType.APPLICATION_JSON),
+                jsonPath("$.title").value("First")
+            )
+    }
+
+    @Test
+    fun `delete does`() {
+        val jsonTerm = ObjectMapper().writeValueAsString(term1)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.delete("/api/terms")
+                .content(jsonTerm)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpectAll(
+                status().isOk
+            )
     }
 }

@@ -50,4 +50,42 @@ class TermControllerTest {
 
         assertThat(foundTerms).containsExactlyInAnyOrder(term1, term2, term3)
     }
+
+    @Test
+    fun `creates a new term`() {
+        val term = Term(id = null, title = "third", startDate = "2022/12/31", endDate = "2023/01/30")
+        val term1 = Term(id = 1, title = "third", startDate = "2022/12/31", endDate = "2023/01/30")
+        whenever(termRepository.save(term)).thenReturn(term1)
+
+        val createdTerm: Term = termController.create(term).body!!
+
+        verify(termRepository).save(term)
+
+        assertThat(createdTerm).isEqualTo(term1)
+    }
+
+    @Test
+    fun `updates term`() {
+        val term1 = Term(id = 1, title = "third updated", startDate = "2022/12/31", endDate = "2023/01/30")
+
+        whenever(termRepository.save(term1)).thenReturn(term1)
+
+        val updatedTerm: Term = termController.update(term1).body!!
+
+        verify(termRepository).save(term1)
+
+        assertThat(updatedTerm).isEqualTo(term1)
+    }
+
+    @Test
+    fun `deletes term`() {
+        val term1 = Term(id = 1, title = "third updated", startDate = "2022/12/31", endDate = "2023/01/30")
+
+        whenever(termRepository.delete(term1)).thenAnswer {
+        }
+
+        termController.delete(term1)
+
+        verify(termRepository).delete(term1)
+    }
 }
