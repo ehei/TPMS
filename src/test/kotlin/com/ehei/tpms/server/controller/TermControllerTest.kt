@@ -35,4 +35,19 @@ class TermControllerTest {
         assertThat(foundTerm).isNotNull
         assertThat(foundTerm!!).isEqualTo(term)
     }
+
+    @Test
+    fun `returns list of terms as JSON`() {
+
+        val term1 = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30")
+        val term2 = Term(id = 2, title = "2nd", startDate = "2022/12/31", endDate = "2023/01/30")
+        val term3 = Term(id = 3, title = "third", startDate = "2022/12/31", endDate = "2023/01/30")
+        whenever(termRepository.findAll()).thenReturn(listOf(term1, term2, term3))
+
+        val foundTerms: List<Term>? = termController.getTerms().body
+
+        verify(termRepository).findAll()
+
+        assertThat(foundTerms).containsExactlyInAnyOrder(term1, term2, term3)
+    }
 }

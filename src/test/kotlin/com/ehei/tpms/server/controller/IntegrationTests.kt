@@ -30,14 +30,21 @@ class IntegrationTests {
     @BeforeEach
     fun setUp() {
 
-        val term = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30")
-        whenever(termRepository.findById(1)).thenReturn(Optional.of(term))
+        val term1 = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30")
+        val term2 = Term(id = 2, title = "2nd", startDate = "2022/12/31", endDate = "2023/01/30")
+        val term3 = Term(id = 3, title = "third", startDate = "2022/12/31", endDate = "2023/01/30")
+
+        whenever(termRepository.findById(1)).thenReturn(Optional.of(term1))
+        whenever(termRepository.findById(2)).thenReturn(Optional.of(term2))
+        whenever(termRepository.findById(3)).thenReturn(Optional.of(term3))
+
+        whenever(termRepository.findAll()).thenReturn(listOf(term1, term2, term3))
     }
 
     @Test
     fun `If term requested exists, return Term and 200`() {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms").param("id", "1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms/1"))
             .andExpectAll(
                 status().isOk,
                 content().contentType(MediaType.APPLICATION_JSON),
@@ -48,9 +55,18 @@ class IntegrationTests {
     @Test
     fun `If term requested does not exist, return a 404`() {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms").param("id", "2"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms/4"))
             .andExpectAll(
                 status().isNotFound
             )
+    }
+
+    @Test
+    fun `get without an id gets list of all terms`() {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms"))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.*").isArray)
     }
 }

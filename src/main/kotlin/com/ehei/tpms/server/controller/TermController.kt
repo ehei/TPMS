@@ -17,10 +17,10 @@ import kotlin.NoSuchElementException
 class TermController(
     @Autowired val termRepository: TermRepository
 ) {
-    @GetMapping
+    @GetMapping("/{id}")
     @ResponseBody
     @ResponseStatus(OK)
-    fun getTerm(@RequestParam(name = "id") id: Long): ResponseEntity<Term> {
+    fun getTerm(@PathVariable(name = "id") id: Long): ResponseEntity<Term> {
 
         try {
             val findById: Optional<Term> = termRepository.findById(id)
@@ -34,5 +34,14 @@ class TermController(
         catch(noSuchElement: NoSuchElementException) {
             return ResponseEntity.notFound().build()
         }
+    }
+
+    @GetMapping
+    @ResponseBody
+    @ResponseStatus(OK)
+    fun getTerms(): ResponseEntity<List<Term>> {
+
+
+        return ResponseEntity.ok( termRepository.findAll() )
     }
 }
