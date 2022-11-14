@@ -28,6 +28,7 @@ class OpenEndpointSecurityConfiguration {
             .permitAll()
             .antMatchers("/**").permitAll()
             .antMatchers("/api/**").permitAll()
+            .antMatchers("/authentication/**").permitAll()
             .and()
             .build()
 

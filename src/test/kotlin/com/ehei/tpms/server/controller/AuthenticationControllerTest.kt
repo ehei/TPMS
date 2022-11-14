@@ -15,6 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.util.*
 
 @WebMvcTest(controllers = [AuthenticationController::class], excludeAutoConfiguration = [SecurityAutoConfiguration::class])
 class AuthenticationControllerTest {
@@ -93,7 +94,7 @@ class AuthenticationControllerTest {
     fun `passing valid username and password with mismatch password throw 401`() {
 
         val user = User(id = 1, username = "who", password = "not the same")
-        whenever(userRepository.findByUsername("who")).thenReturn(user)
+        whenever(userRepository.findByUsername("who")).thenReturn(Optional.of(user))
 
         val jsonValue = ObjectMapper().writeValueAsString(Login(username = "who", password = "what"))
 
@@ -112,7 +113,7 @@ class AuthenticationControllerTest {
     fun `passing valid username and matching password returns the User and 200`() {
 
         val user = User(id = 1, username = "who", password = "what")
-        whenever(userRepository.findByUsername("who")).thenReturn(user)
+        whenever(userRepository.findByUsername("who")).thenReturn(Optional.of(user))
 
         val jsonValue = ObjectMapper().writeValueAsString(Login(username = "who", password = "what"))
 
@@ -135,10 +136,10 @@ class AuthenticationControllerTest {
     @Test
     fun `passing valid username and password but user is not found, add user and return 200`() {
 
-        val user = User(id = 1, username = "who", password = "what")
-        whenever(userRepository.findByUsername("something")).thenReturn(null)
+        val user = User(id = 1, username = "who", password = "what", fullName = "where")
+        whenever(userRepository.findByUsername("something")).thenReturn(Optional.empty())
 
-        whenever(userRepository.save(User(username = "something", password = "what"))).thenReturn(user)
+        whenever(userRepository.save(User(username = "something", password = "what", fullName = "something"))).thenReturn(user)
 
         val jsonValue = ObjectMapper().writeValueAsString(Login(username = "something", password = "what"))
 
@@ -152,9 +153,10 @@ class AuthenticationControllerTest {
                 MockMvcResultMatchers.status().isOk,
                 MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
                 MockMvcResultMatchers.jsonPath("$.username").value("who"),
-                MockMvcResultMatchers.jsonPath("$.password").value("what")
+                MockMvcResultMatchers.jsonPath("$.password").value("what"),
+                MockMvcResultMatchers.jsonPath("$.fullName").value("where")
             )
 
-        verify(userRepository).save(User(username = "something", password = "what"))
+        verify(userRepository).save(User(username = "something", password = "what", fullName = "something"))
     }
 }

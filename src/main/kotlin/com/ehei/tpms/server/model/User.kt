@@ -1,21 +1,19 @@
 package com.ehei.tpms.server.model
 
 import java.io.Serializable
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
+@Table(name = "tpms_users")
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     var username: String? = null,
     var password: String? = null,
-    var role: String = "user"
+    var role: String = "user",
+    var fullName: String? = null
     ): Serializable {
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is User) return false
@@ -24,6 +22,7 @@ class User(
         if (username != other.username) return false
         if (password != other.password) return false
         if (role != other.role) return false
+        if (fullName != other.fullName) return false
 
         return true
     }
@@ -33,6 +32,7 @@ class User(
         result = 31 * result + (username?.hashCode() ?: 0)
         result = 31 * result + (password?.hashCode() ?: 0)
         result = 31 * result + role.hashCode()
+        result = 31 * result + (fullName?.hashCode() ?: 0)
         return result
     }
 

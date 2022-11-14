@@ -24,12 +24,9 @@ class AuthenticationController(
             login.username.isNullOrBlank() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
             login.password.isNullOrBlank() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
             else -> {
-                var found = userRepository.findByUsername(login.username!!)
-
-                if (found == null) {
-                    found = userRepository.save(User(username = login.username, password = login.password))
-                }
-
+                val found = userRepository.findByUsername(login.username!!).orElse(
+                    userRepository.save(User(username = login.username, password = login.password, fullName = login.username))
+                )
                 if (found.password.equals(login.password)) {
                     ResponseEntity.ok(found)
                 }
