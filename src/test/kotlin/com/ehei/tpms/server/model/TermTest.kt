@@ -28,7 +28,7 @@ class TermTest {
         val termNotEqual3 = Term(13, "a title 1", "2022-09-01", "2022-10-01")
         val termNotEqual4 = Term(13, "a title 1", "2022-08-01", "2022-11-01")
         val termNotEqual5 = Term(13, "a title 1", "2022-08-01", "2022-10-01")
-        termNotEqual5.courseIds.add(1)
+        termNotEqual5.course_ids.add(1)
 
         assertThat(term).isEqualTo(termEqual)
         assertThat(termEqual).isEqualTo(term)

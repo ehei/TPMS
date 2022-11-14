@@ -25,9 +25,6 @@ class IntegrationTests {
     private lateinit var termRepository: TermRepository
 
     @Autowired
-    private lateinit var termController: TermController
-
-    @Autowired
     private lateinit var mockMvc: MockMvc
 
     private val term = Term(id = null, title = "create this", startDate = "2022/12/31", endDate = "2023/01/30")
@@ -102,7 +99,7 @@ class IntegrationTests {
         val jsonTerm = ObjectMapper().writeValueAsString(term1)
 
         mockMvc.perform(
-            MockMvcRequestBuilders.put("/api/terms")
+            MockMvcRequestBuilders.put("/api/terms/1")
                 .content(jsonTerm)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -116,11 +113,8 @@ class IntegrationTests {
 
     @Test
     fun `delete does`() {
-        val jsonTerm = ObjectMapper().writeValueAsString(term1)
-
         mockMvc.perform(
-            MockMvcRequestBuilders.delete("/api/terms")
-                .content(jsonTerm)
+            MockMvcRequestBuilders.delete("/api/terms/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )

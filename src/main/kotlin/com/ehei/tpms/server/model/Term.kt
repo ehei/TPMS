@@ -16,9 +16,10 @@ class Term(
     var endDate: String? = null,
 
     @ElementCollection
-    var courseIds: MutableSet<Long> = mutableSetOf()
+    var course_ids: MutableList<Long> = mutableListOf()
 
 ): Serializable {
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Term) return false
@@ -27,7 +28,7 @@ class Term(
         if (title != other.title) return false
         if (startDate != other.startDate) return false
         if (endDate != other.endDate) return false
-        if (courseIds != other.courseIds) return false
+        if (course_ids != other.course_ids) return false
 
         return true
     }
@@ -37,7 +38,7 @@ class Term(
         result = 31 * result + (title?.hashCode() ?: 0)
         result = 31 * result + (startDate?.hashCode() ?: 0)
         result = 31 * result + (endDate?.hashCode() ?: 0)
-        result = 31 * result + courseIds.hashCode()
+        result = 31 * result + course_ids.hashCode()
         return result
     }
 }

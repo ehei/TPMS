@@ -68,10 +68,12 @@ class TermControllerTest {
     fun `updates term`() {
         val term1 = Term(id = 1, title = "third updated", startDate = "2022/12/31", endDate = "2023/01/30")
 
+        whenever(termRepository.findById(1)).thenReturn(Optional.of(term1))
         whenever(termRepository.save(term1)).thenReturn(term1)
 
-        val updatedTerm: Term = termController.update(term1).body!!
+        val updatedTerm: Term = termController.update(1, term1).body!!
 
+        verify(termRepository).findById(1)
         verify(termRepository).save(term1)
 
         assertThat(updatedTerm).isEqualTo(term1)
@@ -84,8 +86,8 @@ class TermControllerTest {
         whenever(termRepository.delete(term1)).thenAnswer {
         }
 
-        termController.delete(term1)
+        termController.delete(1)
 
-        verify(termRepository).delete(term1)
+        verify(termRepository).deleteById(1)
     }
 }

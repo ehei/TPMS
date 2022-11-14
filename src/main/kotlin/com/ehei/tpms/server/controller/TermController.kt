@@ -56,20 +56,39 @@ class TermController(
         return ResponseEntity.ok(savedTerm)
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseBody
     @ResponseStatus(OK)
-    fun update(@RequestBody termToUpdate: Term): ResponseEntity<Term> {
+    fun update(@PathVariable(name = "id") id: Long, @RequestBody termToUpdate: Term): ResponseEntity<Term> {
 
-        val savedTerm = termRepository.save(termToUpdate)
+        val termInRepo = termRepository.findById(id).get()
+
+        val updated = Term(
+            id = id,
+            title = when (termToUpdate.title == null) {
+                true -> termInRepo.title
+                else -> termToUpdate.title
+            },
+            startDate = when(termToUpdate.startDate == null) {
+                true -> termInRepo.startDate
+                else -> termToUpdate.startDate
+            },
+            endDate = when(termToUpdate.endDate == null) {
+                true -> termInRepo.endDate
+                else -> termToUpdate.endDate
+            },
+            course_ids = termToUpdate.course_ids
+        )
+
+        val savedTerm = termRepository.save(updated)
 
         return ResponseEntity.ok(savedTerm)
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(OK)
-    fun delete(@RequestBody termToDelete: Term) {
+    fun delete(@PathVariable(name = "id") id: Long) {
 
-        termRepository.delete(termToDelete)
+        termRepository.deleteById(id)
     }
 }
