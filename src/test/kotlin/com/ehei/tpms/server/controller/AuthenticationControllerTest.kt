@@ -133,10 +133,12 @@ class AuthenticationControllerTest {
     }
 
     @Test
-    fun `passing valid username and password but user is not found throw 401`() {
+    fun `passing valid username and password but user is not found, add user and return 200`() {
 
-        val user = User(id = 1, username = "who", password = "not the same")
-        whenever(userRepository.findByUsername("who")).thenReturn(user)
+        val user = User(id = 1, username = "who", password = "what")
+        whenever(userRepository.findByUsername("something")).thenReturn(null)
+
+        whenever(userRepository.save(User(username = "something", password = "what"))).thenReturn(user)
 
         val jsonValue = ObjectMapper().writeValueAsString(Login(username = "something", password = "what"))
 
@@ -147,7 +149,12 @@ class AuthenticationControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
             .andExpectAll(
-                MockMvcResultMatchers.status().isUnauthorized
+                MockMvcResultMatchers.status().isOk,
+                MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON),
+                MockMvcResultMatchers.jsonPath("$.username").value("who"),
+                MockMvcResultMatchers.jsonPath("$.password").value("what")
             )
+
+        verify(userRepository).save(User(username = "something", password = "what"))
     }
 }

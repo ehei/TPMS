@@ -17,14 +17,20 @@ class AuthenticationController(
 ) {
 
     @PostMapping
+    @ResponseBody
     fun authenticate(@RequestBody login: Login): ResponseEntity<User>
     {
         return when {
             login.username.isNullOrBlank() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
             login.password.isNullOrBlank() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
             else -> {
-                val found = userRepository.findByUsername(login.username!!)
-                if (found?.password.equals(login.password)) {
+                var found = userRepository.findByUsername(login.username!!)
+
+                if (found == null) {
+                    found = userRepository.save(User(username = login.username, password = login.password))
+                }
+
+                if (found.password.equals(login.password)) {
                     ResponseEntity.ok(found)
                 }
                 else {

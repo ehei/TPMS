@@ -12,7 +12,8 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     var username: String? = null,
-    var password: String? = null
+    var password: String? = null,
+    var role: String = "user"
     ): Serializable {
 
     override fun equals(other: Any?): Boolean {
@@ -22,6 +23,7 @@ class User(
         if (id != other.id) return false
         if (username != other.username) return false
         if (password != other.password) return false
+        if (role != other.role) return false
 
         return true
     }
@@ -30,6 +32,8 @@ class User(
         var result = id?.hashCode() ?: 0
         result = 31 * result + (username?.hashCode() ?: 0)
         result = 31 * result + (password?.hashCode() ?: 0)
+        result = 31 * result + role.hashCode()
         return result
     }
+
 }
