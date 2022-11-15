@@ -2,6 +2,7 @@ package com.ehei.tpms.server.controller
 
 import com.ehei.tpms.server.datastore.TermRepository
 import com.ehei.tpms.server.model.Term
+import com.ehei.tpms.server.model.User
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,10 +28,13 @@ class IntegrationTests {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    private val term = Term(id = null, title = "create this", startDate = "2022/12/31", endDate = "2023/01/30")
-    private val term1 = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30")
-    private val term2 = Term(id = 2, title = "2nd", startDate = "2022/12/31", endDate = "2023/01/30")
-    private val term3 = Term(id = 3, title = "third", startDate = "2022/12/31", endDate = "2023/01/30")
+    private val user = User(42, "testuser", "testpassword", "testrole")
+
+    private val term = Term(id = null, title = "create this", startDate = "2022/12/31", endDate = "2023/01/30", userId = user.id)
+    private val term1 = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30", userId = user.id)
+    private val term2 = Term(id = 2, title = "2nd", startDate = "2022/12/31", endDate = "2023/01/30", userId = user.id)
+    private val term3 = Term(id = 3, title = "third", startDate = "2022/12/31", endDate = "2023/01/30", userId = user.id)
+
 
     @BeforeEach
     fun setUp() {
@@ -47,7 +51,9 @@ class IntegrationTests {
     @Test
     fun `If term requested exists, return Term and 200`() {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms/1")
+            .header("Authorization", ObjectMapper().writeValueAsString(user))
+        )
             .andExpectAll(
                 status().isOk,
                 content().contentType(MediaType.APPLICATION_JSON),
@@ -58,7 +64,9 @@ class IntegrationTests {
     @Test
     fun `If term requested does not exist, return a 404`() {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms/4"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms/4")
+            .header("Authorization", ObjectMapper().writeValueAsString(user))
+        )
             .andExpectAll(
                 status().isNotFound
             )
@@ -67,7 +75,9 @@ class IntegrationTests {
     @Test
     fun `get without an id gets list of all terms and total count in the header`() {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/terms")
+            .header("Authorization", ObjectMapper().writeValueAsString(user))
+        )
             .andExpect(header().longValue("X-Total-Count", 3))
             .andExpect(header().string("Access-Control-Expose-Headers", "X-Total-Count"))
             .andExpect(status().isOk)
@@ -85,6 +95,7 @@ class IntegrationTests {
                 .content(jsonTerm)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", ObjectMapper().writeValueAsString(user))
         )
             .andExpectAll(
                 status().isOk,
@@ -103,6 +114,7 @@ class IntegrationTests {
                 .content(jsonTerm)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", ObjectMapper().writeValueAsString(user))
         )
             .andExpectAll(
                 status().isOk,
@@ -117,9 +129,24 @@ class IntegrationTests {
             MockMvcRequestBuilders.delete("/api/terms/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", ObjectMapper().writeValueAsString(user))
         )
             .andExpectAll(
                 status().isOk
+            )
+    }
+
+    @Test
+    fun `delete with mismatchuser id returns not found`() {
+        user.id = 31
+        mockMvc.perform(
+            MockMvcRequestBuilders.delete("/api/terms/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", ObjectMapper().writeValueAsString(user))
+        )
+            .andExpectAll(
+                status().isNotFound
             )
     }
 }

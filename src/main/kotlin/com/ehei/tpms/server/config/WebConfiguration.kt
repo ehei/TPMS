@@ -22,6 +22,7 @@ class WebConfiguration {
         config.addAllowedOrigin("http://localhost:3000")
         config.addAllowedHeader("*")
         config.addAllowedHeader("X-Total-Count")
+        config.addAllowedHeader("Authorization")
         config.addAllowedMethod("*")
         source.registerCorsConfiguration("/**", config)
         return CorsFilter(source)

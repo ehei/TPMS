@@ -2,6 +2,7 @@ package com.ehei.tpms.server.controller
 
 import com.ehei.tpms.server.datastore.TermRepository
 import com.ehei.tpms.server.model.Term
+import com.ehei.tpms.server.model.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
@@ -18,12 +19,12 @@ class TermController(
     @GetMapping("/{id}")
     @ResponseBody
     @ResponseStatus(OK)
-    fun getTerm(@PathVariable(name = "id") id: Long): ResponseEntity<Term> {
+    fun getTerm(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long): ResponseEntity<Term> {
 
         try {
             val findById: Optional<Term> = termRepository.findById(id)
 
-            if (findById.isEmpty) {
+            if (findById.isEmpty || ! isAuthorized(token, findById.get().userId)) {
                 return ResponseEntity.notFound().build()
             }
 
@@ -36,9 +37,18 @@ class TermController(
     @GetMapping
     @ResponseBody
     @ResponseStatus(OK)
-    fun getTerms(): ResponseEntity<List<Term>> {
+    fun getTerms(@RequestHeader("Authorization") token: String): ResponseEntity<List<Term>> {
 
-        val findAll = termRepository.findAll()
+        if (token == null) {
+            return ResponseEntity.ok()
+                .header("X-Total-Count", "" + 0)
+                .header("Access-Control-Expose-Headers", "X-Total-Count")
+                .body(listOf())
+        }
+
+        val user = objectMapper.readValue(token, User::class.java)
+
+        val findAll = termRepository.findAll().filter { record -> record.userId == user.id }
 
         return ResponseEntity.ok()
             .header("X-Total-Count", "" + findAll.size)
@@ -49,7 +59,12 @@ class TermController(
     @PostMapping
     @ResponseBody
     @ResponseStatus(OK)
-    fun create(@RequestBody term: Term): ResponseEntity<Term> {
+    fun create(@RequestHeader("Authorization") token: String, @RequestBody term: Term): ResponseEntity<Term> {
+
+        term.userId = userId(token)
+
+        if (term.userId == -1L)
+            return ResponseEntity.badRequest().build()
 
         val savedTerm = termRepository.save(term)
 
@@ -59,22 +74,28 @@ class TermController(
     @PutMapping("/{id}")
     @ResponseBody
     @ResponseStatus(OK)
-    fun update(@PathVariable(name = "id") id: Long, @RequestBody termToUpdate: Term): ResponseEntity<Term> {
+    fun update(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long, @RequestBody termToUpdate: Term): ResponseEntity<Term> {
 
-        val termInRepo = termRepository.findById(id).get()
+        val termInRepo = termRepository.findById(id)
+
+        if (termInRepo.isEmpty || ! isAuthorized(token, termInRepo.get().userId)) {
+            return ResponseEntity.notFound().build()
+        }
+
+        val term = termInRepo.get()
 
         val updated = Term(
             id = id,
             title = when (termToUpdate.title == null) {
-                true -> termInRepo.title
+                true -> term.title
                 else -> termToUpdate.title
             },
             startDate = when(termToUpdate.startDate == null) {
-                true -> termInRepo.startDate
+                true -> term.startDate
                 else -> termToUpdate.startDate
             },
             endDate = when(termToUpdate.endDate == null) {
-                true -> termInRepo.endDate
+                true -> term.endDate
                 else -> termToUpdate.endDate
             },
             course_ids = termToUpdate.course_ids
@@ -87,8 +108,15 @@ class TermController(
 
     @DeleteMapping("/{id}")
     @ResponseStatus(OK)
-    fun delete(@PathVariable(name = "id") id: Long) {
+    fun delete(@RequestHeader("Authorization") token: String?, @PathVariable(name = "id") id: Long):
+        ResponseEntity<Long> {
+
+        val termInRepo = termRepository.findById(id)
+
+        if (! isAuthorized(token, termInRepo.get().userId))
+            return ResponseEntity.notFound().build()
 
         termRepository.deleteById(id)
+        return ResponseEntity.ok(id)
     }
 }
