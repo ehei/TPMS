@@ -3,6 +3,8 @@ package com.ehei.tpms.server.model
 import java.io.Serializable
 import javax.persistence.*
 
+val UNKNOWN_USER = User(id = -2, role = "unknown", fullName = "UNKNOWN USER")
+
 @Entity
 @Table(name = "tpms_users")
 class User(
@@ -12,7 +14,7 @@ class User(
     var username: String? = null,
     var password: String? = null,
     var role: String = "user",
-    var fullName: String? = null
+    var fullName: String? = null,
     ): Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -35,5 +37,4 @@ class User(
         result = 31 * result + (fullName?.hashCode() ?: 0)
         return result
     }
-
 }

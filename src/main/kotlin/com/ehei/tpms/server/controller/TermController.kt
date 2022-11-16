@@ -2,7 +2,7 @@ package com.ehei.tpms.server.controller
 
 import com.ehei.tpms.server.datastore.TermRepository
 import com.ehei.tpms.server.model.Term
-import com.ehei.tpms.server.model.User
+import com.ehei.tpms.server.model.UNKNOWN_USER
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
@@ -22,7 +22,7 @@ class TermController(
     fun getTerm(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long): ResponseEntity<Term> {
 
         try {
-            val findById: Optional<Term> = termRepository.findById(id)
+            val findById = termRepository.findById(id)
 
             if (findById.isEmpty || ! isAuthorized(token, findById.get().userId)) {
                 return ResponseEntity.notFound().build()
@@ -39,21 +39,12 @@ class TermController(
     @ResponseStatus(OK)
     fun getTerms(@RequestHeader("Authorization") token: String): ResponseEntity<List<Term>> {
 
-        if (token == null) {
-            return ResponseEntity.ok()
-                .header("X-Total-Count", "" + 0)
-                .header("Access-Control-Expose-Headers", "X-Total-Count")
-                .body(listOf())
-        }
+        var found = listOf<Term>()
+        val user = getValidToken(token)
+        if (user != UNKNOWN_USER)
+            found = termRepository.findAll().filter { record -> record.userId == user.id }
 
-        val user = objectMapper.readValue(token, User::class.java)
-
-        val findAll = termRepository.findAll().filter { record -> record.userId == user.id }
-
-        return ResponseEntity.ok()
-            .header("X-Total-Count", "" + findAll.size)
-            .header("Access-Control-Expose-Headers", "X-Total-Count")
-            .body(findAll)
+        return createListResponse(found)
     }
 
     @PostMapping
@@ -61,11 +52,11 @@ class TermController(
     @ResponseStatus(OK)
     fun create(@RequestHeader("Authorization") token: String, @RequestBody term: Term): ResponseEntity<Term> {
 
-        term.userId = userId(token)
-
-        if (term.userId == -1L)
+        val user = getValidToken(token)
+        if (user == UNKNOWN_USER)
             return ResponseEntity.badRequest().build()
 
+        term.userId = user.id
         val savedTerm = termRepository.save(term)
 
         return ResponseEntity.ok(savedTerm)
@@ -78,9 +69,9 @@ class TermController(
 
         val termInRepo = termRepository.findById(id)
 
-        if (termInRepo.isEmpty || ! isAuthorized(token, termInRepo.get().userId)) {
+        val user = getValidToken(token)
+        if (termInRepo.isEmpty || user == UNKNOWN_USER || user.id != termInRepo.get().userId)
             return ResponseEntity.notFound().build()
-        }
 
         val term = termInRepo.get()
 
