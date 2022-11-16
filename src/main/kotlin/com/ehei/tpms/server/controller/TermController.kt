@@ -14,15 +14,15 @@ import java.util.*
 @RequestMapping(path = ["api/terms"])
 @CrossOrigin("*")
 class TermController(
-    @Autowired val termRepository: TermRepository
+    @Autowired val repository: TermRepository
 ) {
     @GetMapping("/{id}")
     @ResponseBody
     @ResponseStatus(OK)
-    fun getTerm(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long): ResponseEntity<Term> {
+    fun get(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long): ResponseEntity<Term> {
 
         try {
-            val findById = termRepository.findById(id)
+            val findById = repository.findById(id)
 
             if (findById.isEmpty || ! isAuthorized(token, findById.get().userId)) {
                 return ResponseEntity.notFound().build()
@@ -37,12 +37,12 @@ class TermController(
     @GetMapping
     @ResponseBody
     @ResponseStatus(OK)
-    fun getTerms(@RequestHeader("Authorization") token: String): ResponseEntity<List<Term>> {
+    fun getAll(@RequestHeader("Authorization") token: String): ResponseEntity<List<Term>> {
 
         var found = listOf<Term>()
         val user = getValidToken(token)
         if (user != UNKNOWN_USER)
-            found = termRepository.findAll().filter { record -> record.userId == user.id }
+            found = repository.findAll().filter { record -> record.userId == user.id }
 
         return createListResponse(found)
     }
@@ -57,7 +57,7 @@ class TermController(
             return ResponseEntity.badRequest().build()
 
         term.userId = user.id
-        val savedTerm = termRepository.save(term)
+        val savedTerm = repository.save(term)
 
         return ResponseEntity.ok(savedTerm)
     }
@@ -67,13 +67,13 @@ class TermController(
     @ResponseStatus(OK)
     fun update(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long, @RequestBody termToUpdate: Term): ResponseEntity<Term> {
 
-        val termInRepo = termRepository.findById(id)
+        val found = repository.findById(id)
 
         val user = getValidToken(token)
-        if (termInRepo.isEmpty || user == UNKNOWN_USER || user.id != termInRepo.get().userId)
+        if (found.isEmpty || user == UNKNOWN_USER || user.id != found.get().userId)
             return ResponseEntity.notFound().build()
 
-        val term = termInRepo.get()
+        val term = found.get()
 
         val updated = Term(
             id = id,
@@ -89,10 +89,11 @@ class TermController(
                 true -> term.endDate
                 else -> termToUpdate.endDate
             },
-            course_ids = termToUpdate.course_ids
+            course_ids = termToUpdate.course_ids,
+            userId = user.id
         )
 
-        val savedTerm = termRepository.save(updated)
+        val savedTerm = repository.save(updated)
 
         return ResponseEntity.ok(savedTerm)
     }
@@ -102,12 +103,12 @@ class TermController(
     fun delete(@RequestHeader("Authorization") token: String?, @PathVariable(name = "id") id: Long):
         ResponseEntity<Long> {
 
-        val termInRepo = termRepository.findById(id)
+        val found = repository.findById(id)
 
-        if (! isAuthorized(token, termInRepo.get().userId))
+        if (! isAuthorized(token, found.get().userId))
             return ResponseEntity.notFound().build()
 
-        termRepository.deleteById(id)
+        repository.deleteById(id)
         return ResponseEntity.ok(id)
     }
 }

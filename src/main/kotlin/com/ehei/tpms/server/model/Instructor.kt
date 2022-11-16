@@ -11,7 +11,8 @@ class Instructor(
 
     var name: String? = null,
     var phoneNumber: String? = null,
-    var emailAddress: String? = null
+    var emailAddress: String? = null,
+    var userId: Long? = null
 
 ): Serializable {
     override fun equals(other: Any?): Boolean {
@@ -22,6 +23,7 @@ class Instructor(
         if (name != other.name) return false
         if (phoneNumber != other.phoneNumber) return false
         if (emailAddress != other.emailAddress) return false
+        if (userId != other.userId) return false
 
         return true
     }
@@ -31,6 +33,7 @@ class Instructor(
         result = 31 * result + (name?.hashCode() ?: 0)
         result = 31 * result + (phoneNumber?.hashCode() ?: 0)
         result = 31 * result + (emailAddress?.hashCode() ?: 0)
+        result = 31 * result + (userId?.hashCode() ?: 0)
         return result
     }
 

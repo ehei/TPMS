@@ -22,7 +22,9 @@ class Course(
     var assessment_ids: MutableList<Long> = mutableListOf(),
 
     @ElementCollection
-    var notes: MutableList<String> = mutableListOf()
+    var notes: MutableList<String> = mutableListOf(),
+
+    var userId: Long? = null
 
 ): Serializable {
     override fun equals(other: Any?): Boolean {
@@ -37,6 +39,7 @@ class Course(
         if (instructor_ids != other.instructor_ids) return false
         if (assessment_ids != other.assessment_ids) return false
         if (notes != other.notes) return false
+        if (userId != other.userId) return false
 
         return true
     }
@@ -50,6 +53,7 @@ class Course(
         result = 31 * result + instructor_ids.hashCode()
         result = 31 * result + assessment_ids.hashCode()
         result = 31 * result + notes.hashCode()
+        result = 31 * result + (userId?.hashCode() ?: 0)
         return result
     }
 

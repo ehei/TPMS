@@ -38,7 +38,7 @@ class TermControllerTest {
         val term = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30", userId = user.id)
         whenever(termRepository.findById(1)).thenReturn(Optional.of(term))
 
-        val foundTerm: Term? = termController.getTerm(userAsString, 1).body
+        val foundTerm: Term? = termController.get(userAsString, 1).body
 
         verify(termRepository).findById(1)
         assertThat(foundTerm).isNotNull
@@ -51,7 +51,7 @@ class TermControllerTest {
         val term = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30", userId = 23)
         whenever(termRepository.findById(1)).thenReturn(Optional.of(term))
 
-        assertThat(termController.getTerm(userAsString, 1).statusCodeValue).isEqualTo(HttpStatus.NOT_FOUND.value())
+        assertThat(termController.get(userAsString, 1).statusCodeValue).isEqualTo(HttpStatus.NOT_FOUND.value())
     }
 
     @Test
@@ -63,7 +63,7 @@ class TermControllerTest {
         val termDifferentUserId = Term(id = 3, title = "third", startDate = "2022/12/31", endDate = "2023/01/30", userId = 89)
         whenever(termRepository.findAll()).thenReturn(listOf(term1, term2, term3, termDifferentUserId))
 
-        val foundTerms: List<Term>? = termController.getTerms(userAsString).body
+        val foundTerms: List<Term>? = termController.getAll(userAsString).body
 
         assertThat(foundTerms).containsExactlyInAnyOrder(term1, term2, term3)
     }
@@ -89,6 +89,8 @@ class TermControllerTest {
         whenever(termRepository.save(any<Term>())).thenReturn(term1)
 
         val updatedTerm: Term = termController.update(userAsString,1, term1).body!!
+
+        assertThat(updatedTerm).isNotNull
 
         verify(termRepository).findById(1L)
         verify(termRepository).save(any<Term>())

@@ -13,10 +13,11 @@ class Assessment (
     var startDate: String? = null,
     var endDate: String? = null,
 
-    var performance: Boolean = false
+    var performance: Boolean = false,
+
+    var userId: Long? = null
 
 ): Serializable {
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Assessment) return false
@@ -26,6 +27,7 @@ class Assessment (
         if (startDate != other.startDate) return false
         if (endDate != other.endDate) return false
         if (performance != other.performance) return false
+        if (userId != other.userId) return false
 
         return true
     }
@@ -36,6 +38,7 @@ class Assessment (
         result = 31 * result + (startDate?.hashCode() ?: 0)
         result = 31 * result + (endDate?.hashCode() ?: 0)
         result = 31 * result + performance.hashCode()
+        result = 31 * result + (userId?.hashCode() ?: 0)
         return result
     }
 
