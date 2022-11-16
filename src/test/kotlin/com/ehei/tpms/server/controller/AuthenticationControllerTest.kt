@@ -144,8 +144,9 @@ class AuthenticationControllerTest {
     @Test
     fun `passing valid username and password but user is not found, add user and return 200`() {
 
+        val userInDataStore = User(id = 122, username = "whodis", password = "whatthat", fullName = "wherethis")
         val user = User(id = 1, username = "who", password = "what", fullName = "where")
-        whenever(userRepository.findByUsername("something")).thenReturn(Optional.empty())
+        whenever(userRepository.findAll()).thenReturn(listOf(userInDataStore))
 
         whenever(userRepository.save(User(username = "something", password = "what", fullName = "something"))).thenReturn(user)
 

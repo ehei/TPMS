@@ -137,7 +137,7 @@ class IntegrationTests {
     }
 
     @Test
-    fun `delete with mismatchuser id returns not found`() {
+    fun `delete with mismatch user id returns not found`() {
         user.id = 31
         mockMvc.perform(
             MockMvcRequestBuilders.delete("/api/terms/1")
