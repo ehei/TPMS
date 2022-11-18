@@ -1,0 +1,154 @@
+{
+  "terms": [
+    {
+      "id": "1",
+      "title": "first",
+      "startDate": "2022-11-08",
+      "endDate": "2022-11-24"
+    },
+    {
+      "title": "first term",
+      "startDate": "02/03/1999",
+      "endDate": "05/06/2000",
+      "courses": [],
+      "id": "DkX7ZPh"
+    },
+    {
+      "title": "2nd term",
+      "startDate": "02/03/1999",
+      "endDate": "05/06/2000",
+      "courses": [
+        {
+          "title": "2nd Course",
+          "status": "Completed",
+          "startDate": "2022-01-17",
+          "endDate": "2022-03-12",
+          "notes": [],
+          "id": 2
+        }
+      ],
+      "id": "tGyKDXe"
+    }
+  ],
+  "courses": [
+    {
+      "title": "First Course",
+      "status": "PlanToTake",
+      "startDate": "2022-11-07",
+      "endDate": "2022-11-26",
+      "notes": [
+        {
+          "text": "112345",
+          "id": 1
+        }
+      ],
+      "id": 1,
+      "assessments": [
+        {
+          "title": "2 Assess",
+          "startDate": "2022-04-17",
+          "endDate": "2022-06-22",
+          "performance": false,
+          "id": 2
+        }
+      ],
+      "instructors": [
+        {
+          "name": "Prof 1",
+          "phoneNumber": "17348885555",
+          "emailAddress": "p1@mailinator.com",
+          "id": 1
+        },
+        {
+          "name": "Prof 2",
+          "phoneNumber": "17342225555",
+          "emailAddress": "p2@mailinator.com",
+          "id": 2
+        }
+      ]
+    },
+    {
+      "title": "2nd Course",
+      "status": "Completed",
+      "startDate": "2022-01-17",
+      "endDate": "2022-03-12",
+      "notes": [
+        {
+          "text": "b"
+        },
+        {
+          "text": "a"
+        }
+      ],
+      "id": 2
+    },
+    {
+      "title": "c3",
+      "status": "Dropped",
+      "startDate": "2022-10-31",
+      "endDate": "2022-11-23",
+      "notes": [
+        {
+          "text": "asdfasfasfasfsfd"
+        }
+      ],
+      "id": 3
+    }
+  ],
+  "instructors": [
+    {
+      "name": "Prof 1",
+      "phoneNumber": "17348885555",
+      "emailAddress": "p1@mailinator.com",
+      "id": 1
+    },
+    {
+      "name": "Prof 2",
+      "phoneNumber": "17342225555",
+      "emailAddress": "p2@mailinator.com",
+      "id": 2
+    },
+    {
+      "name": "Prof 3",
+      "phoneNumber": "17343335555",
+      "emailAddress": "p3@mailinator.com",
+      "id": 3
+    },
+    {
+      "name": "i9",
+      "phoneNumber": "1231231231",
+      "emailAddress": "asdf@gmail.com",
+      "id": 4
+    }
+  ],
+  "assessments": [
+    {
+      "title": "1st Assess",
+      "startDate": "2022-01-17",
+      "endDate": "2022-03-12",
+      "performance": true,
+      "id": 1
+    },
+    {
+      "title": "2 Assess",
+      "startDate": "2022-04-17",
+      "endDate": "2022-06-22",
+      "performance": false,
+      "id": 2
+    }
+  ],
+  "notes": [
+    {
+      "text": "112345",
+      "id": 1
+    },
+    {
+      "text": "asdf",
+      "id": 2
+    },
+    {
+      "text": "assadfsdfdf",
+      "id": 3
+    }
+  ]
+}
