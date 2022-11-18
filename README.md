@@ -1,6 +1,12 @@
 # TPMS
 WGU Capstone project - server - TPMS
 
+## Setup
+
+- ./gradlew wrapper
+- ./gradlew buildDependents
+- ./gradlew build
+
 
 ## To create the images:
 
