@@ -18,6 +18,8 @@ plugins {
 	kotlin("plugin.spring") version kotlinVersion
 	kotlin("plugin.jpa") version kotlinVersion
 	kotlin("plugin.allopen") version kotlinVersion
+
+	id("com.palantir.docker") version "0.34.0"
 }
 
 group = "com.ehei.tpms"
@@ -102,3 +104,8 @@ tasks.pitest {
 	jvmArgs = jvmArguments
 	maxHeapSize = "1024m"
 }
+
+springBoot {
+	buildInfo()
+}
+
