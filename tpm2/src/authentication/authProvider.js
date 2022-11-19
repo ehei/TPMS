@@ -45,12 +45,9 @@ const authProvider = {
     },
     getIdentity: () => {
         let item = localStorage.getItem(localStorageItem);
-        console.log(item);
         if (item == null) return Promise.reject();
 
-        console.log(item);
         let parsed = JSON.parse(item);
-        console.log("parsed = " + parsed);
         return Promise.resolve(parsed);
     },
         // Promise.resolve({

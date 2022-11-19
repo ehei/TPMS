@@ -12,10 +12,7 @@ const styles = {
 
 const AddNoteButton = ({classes, props}) => {
     const record = useRecordContext(props);
-    console.log("AddNoteButton");
-    console.log(record);
     if (! record) return null;
-    console.log(record);
     return <Button
             className={classes.button}
             variant="raised"

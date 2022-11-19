@@ -19,9 +19,6 @@ export const Dashboard = () => {
 
     if (total === 0) return <DashboardEmpty />;
 
-    console.log("terms[0]");
-    console.log(data[0]);
-
     return (<DashboardLoaded items={data}
                             total={total}
                             handleLoadMore={ () => {}}

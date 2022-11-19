@@ -30,7 +30,6 @@ import {FulltermShow} from "./dashboard/FulltermShow";
 
 const fetchJson = (url, options = {}) => {
     let token = localStorage.getItem('token');
-    console.log("token to use for fetch = " + token);
     options.user = {
         authenticated: true,
         token: token
