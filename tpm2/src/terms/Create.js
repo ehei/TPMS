@@ -1,25 +1,12 @@
 import {Create, DateInput, ReferenceArrayInput, SelectArrayInput, SimpleForm, TextInput} from 'react-admin';
-import {
-    required,
-    minLength,
-    maxLength,
-    minValue,
-    maxValue,
-    number,
-    regex,
-    email,
-    choices
-} from 'react-admin';
-
-const validateName = [required(), minLength(2), maxLength(15)];
-const validateEmail = email();
+import {validateDate, validateName} from "../validation";
 
 export const TermCreate = () => (
     <Create redirect={"list"}>
         <SimpleForm>
-            <TextInput source="title"/>
-            <DateInput source="startDate"/>
-            <DateInput source="endDate"/>
+            <TextInput source="title" validate={validateName} />
+            <DateInput source="startDate" validate={validateDate} />
+            <DateInput source="endDate" validate={validateDate} />
             <ReferenceArrayInput reference="courses" source="course_ids">
                 <SelectArrayInput optionText={"title"} />
             </ReferenceArrayInput>

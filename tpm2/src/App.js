@@ -44,13 +44,12 @@ const App = () => (
     <Admin dataProvider={dataProvider} authProvider={authProvider} dashboard={Dashboard}>
         <Resource name="terms" list={TermList} show={TermShow} edit={TermEdit} create={TermCreate}
                   recordRepresentation="title"/>
-        <Resource name="instructors" list={InstructorList} show={InstructorShow} edit={InstructorEdit}
-                  create={InstructorCreate} recordRepresentation="title"/>
-        <Resource name="assessments" list={AssessmentList} show={AssessmentShow} edit={AssessmentEdit}
-                  create={AssessmentCreate} recordRepresentation="title"/>
         <Resource name="courses" list={CourseList} show={CourseShow} edit={CourseEdit} create={CourseCreate}
                   recordRepresentation="title"/>
-        <Resource name="notes" recordRepresentation="text" show={NoteShow} edit={NoteEdit} create={NoteCreate}/>
+        <Resource name="assessments" list={AssessmentList} show={AssessmentShow} edit={AssessmentEdit}
+                  create={AssessmentCreate} recordRepresentation="title"/>
+        <Resource name="instructors" list={InstructorList} show={InstructorShow} edit={InstructorEdit}
+                  create={InstructorCreate} recordRepresentation="name"/>
     </Admin>
 );
 

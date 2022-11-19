@@ -53,14 +53,14 @@ const DashboardLoadedView = ({
                                         <br/><i>Courses</i><br/>
                                         { term.courses.map(course => {
                                             return (
-                                                <Typography variant="h6" component="div">
+                                                <Typography variant="h6" component="div" key={course.id}>
                                                     <br/>
                                                     {course.title}<br/>
                                                     Start: {course.startDate} End: {course.endDate}
                                                     <br/>&nbsp;&nbsp;&nbsp;<i>Assessments</i><br/>
                                                     { course.assessments.map(assessment => {
                                                         return (
-                                                            <Typography variant="h6" component="div">
+                                                            <Typography variant="h6" component="div" key={assessment.id}>
                                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{assessment.title}  ({assessment.performance? "Performance" : "Objective"})<br/>
                                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Start: {assessment.startDate} End: {assessment.endDate}
                                                                 <br/>
@@ -69,7 +69,7 @@ const DashboardLoadedView = ({
                                                     &nbsp;&nbsp;&nbsp;<i>Instructors</i><br/>
                                                     { course.instructors.map(instructor => {
                                                         return (
-                                                            <Typography variant="h6" component="div">
+                                                            <Typography variant="h6" component="div" key={instructor.id}>
                                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{instructor.name}<br/>
                                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone: {instructor.phoneNumber} Email: {instructor.emailAddress}
                                                                 <br/>

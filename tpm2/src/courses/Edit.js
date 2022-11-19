@@ -2,27 +2,28 @@ import {
     ArrayInput,
     DateInput,
     Edit,
-    ReferenceArrayInput,
+    ReferenceArrayInput, required,
     SelectArrayInput,
     SelectInput,
     SimpleForm,
     SimpleFormIterator,
     TextInput
 } from 'react-admin';
+import {validateDate, validateName, validateNote} from "../validation";
 
 export const CourseEdit = () => {
     return (
         <Edit>
             <SimpleForm>
-                <TextInput source="title"/>
+                <TextInput source="title" validate={validateName}/>
                 <SelectInput source="status" choices={[
                     {id: "PlanToTake", name: "Plan to Take"},
                     {id: "InProgress", name: "In Progress"},
                     {id: "Completed", name: "Completed"},
                     {id: "Dropped", name: "Dropped"}
-                ]}/>
-                <DateInput source="startDate"/>
-                <DateInput source="endDate"/>
+                ]} validation={required()} />
+                <DateInput source="startDate" validate={validateDate}/>
+                <DateInput source="endDate" validate={validateDate}/>
                 <ReferenceArrayInput reference="assessments" source="assessment_ids">
                     <SelectArrayInput optionText={"title"}/>
                 </ReferenceArrayInput>
@@ -31,7 +32,7 @@ export const CourseEdit = () => {
                 </ReferenceArrayInput>
                 <ArrayInput source="notes">
                     <SimpleFormIterator inline>
-                        <TextInput source="" />
+                        <TextInput source="" validate={validateNote}  />
                     </SimpleFormIterator>
                 </ArrayInput>
             </SimpleForm>
