@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { Card, CardContent, CardHeader, Box } from '@mui/material';
-import Paper from '@mui/material/Paper';
+import {Card, CardContent} from '@mui/material';
 import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 
 const styles = {
     root: {

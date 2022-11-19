@@ -1,4 +1,4 @@
-import {BooleanField, Show, SimpleShowLayout, TextField, DateField} from 'react-admin';
+import {BooleanField, DateField, Show, SimpleShowLayout, TextField} from 'react-admin';
 
 export const AssessmentShow = () => (
     <Show>

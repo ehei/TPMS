@@ -1,6 +1,6 @@
 import {
-    Datagrid,
     ArrayField,
+    Datagrid,
     DateField,
     FunctionField,
     ReferenceArrayField,
@@ -8,7 +8,6 @@ import {
     Show,
     SimpleList,
     SimpleShowLayout,
-    SingleFieldList,
     TextField
 } from 'react-admin';
 

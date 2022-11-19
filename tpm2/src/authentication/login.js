@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { useLogin, useNotify, Notification } from 'react-admin';
+import {useState} from 'react';
+import {useLogin, useNotify} from 'react-admin';
 
 const CustomLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');

@@ -1,4 +1,4 @@
-import {Create, EmailField, SimpleForm, TextInput} from 'react-admin';
+import {Create, SimpleForm, TextInput} from 'react-admin';
 
 export const InstructorCreate = () => (
     <Create redirect={"list"}>

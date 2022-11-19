@@ -1,18 +1,13 @@
 import {
-    Create,
-    SimpleForm,
-    TextInput,
-    SelectInput,
-    DateInput,
     ArrayInput,
-    SimpleFormIterator,
-    AutocompleteInput,
+    Create,
+    DateInput,
     ReferenceArrayInput,
-    ReferenceManyField,
-    Datagrid,
-    TextField,
-    ReferenceInput,
-    SelectArrayInput
+    SelectArrayInput,
+    SelectInput,
+    SimpleForm,
+    SimpleFormIterator,
+    TextInput
 } from 'react-admin';
 
 export const CourseCreate = () => (

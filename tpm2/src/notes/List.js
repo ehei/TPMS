@@ -1,11 +1,4 @@
-import {
-    Datagrid,
-    List,
-    ReferenceArrayField,
-    TextField,
-    useRecordContext,
-    WithRecord
-} from 'react-admin';
+import {useRecordContext} from 'react-admin';
 
 export const NoteList = (...props) => {
     const record = useRecordContext(props);

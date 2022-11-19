@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 
 import * as React from "react";
-import {Admin, Resource, CreateButton, ListGuesser, ShowGuesser, EditGuesser, fetchUtils} from 'react-admin';
+import {Admin, Resource, fetchUtils} from 'react-admin';
 import jsonServerProvider from "ra-data-json-server";
 import {TermList} from "./terms/List";
 import {TermShow} from "./terms/Show";
@@ -24,28 +23,31 @@ import {NoteShow} from "./notes/Show";
 import {NoteEdit} from "./notes/Edit";
 import {NoteCreate} from "./notes/Create";
 import authProvider from "./authentication/authProvider";
-import simpleAuthProvider from "./authentication/simpleAuthProvider";
-import {Dashboard} from "./dashboard/Dashboard2";
+import {Dashboard} from "./dashboard/Dashboard";
 
 const fetchJson = (url, options = {}) => {
-  let token = localStorage.getItem('token');
-  console.log("token to use for fetch = " + token);
-  options.user = {
+    let token = localStorage.getItem('token');
+    console.log("token to use for fetch = " + token);
+    options.user = {
         authenticated: true,
         token: token
-  }
-  return fetchUtils.fetchJson(url, options);
+    }
+    return fetchUtils.fetchJson(url, options);
 };
 
 const dataProvider = jsonServerProvider('http://localhost:8080/api', fetchJson);
 
 const App = () => (
-    <Admin dataProvider={dataProvider} authProvider={authProvider} dashboard={Dashboard} >
-      <Resource name="terms" list={TermList} show={TermShow} edit={TermEdit} create={TermCreate} recordRepresentation="title" />
-      <Resource name="instructors" list={InstructorList} show={InstructorShow} edit={InstructorEdit} create={InstructorCreate} recordRepresentation="title" />
-      <Resource name="assessments" list={AssessmentList} show={AssessmentShow} edit={AssessmentEdit} create={AssessmentCreate} recordRepresentation="title" />
-      <Resource name="courses" list={CourseList} show={CourseShow} edit={CourseEdit} create={CourseCreate} recordRepresentation="title" />
-      <Resource name="notes" recordRepresentation="text" show={NoteShow} edit={NoteEdit} create={NoteCreate} />
+    <Admin dataProvider={dataProvider} authProvider={authProvider} dashboard={Dashboard}>
+        <Resource name="terms" list={TermList} show={TermShow} edit={TermEdit} create={TermCreate}
+                  recordRepresentation="title"/>
+        <Resource name="instructors" list={InstructorList} show={InstructorShow} edit={InstructorEdit}
+                  create={InstructorCreate} recordRepresentation="title"/>
+        <Resource name="assessments" list={AssessmentList} show={AssessmentShow} edit={AssessmentEdit}
+                  create={AssessmentCreate} recordRepresentation="title"/>
+        <Resource name="courses" list={CourseList} show={CourseShow} edit={CourseEdit} create={CourseCreate}
+                  recordRepresentation="title"/>
+        <Resource name="notes" recordRepresentation="text" show={NoteShow} edit={NoteEdit} create={NoteCreate}/>
     </Admin>
 );
 

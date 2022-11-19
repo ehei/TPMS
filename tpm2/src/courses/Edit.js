@@ -1,14 +1,13 @@
 import {
     ArrayInput,
-    AutocompleteInput,
     DateInput,
     Edit,
+    ReferenceArrayInput,
+    SelectArrayInput,
     SelectInput,
     SimpleForm,
     SimpleFormIterator,
-    TextInput,
-    ReferenceArrayInput,
-    SelectArrayInput
+    TextInput
 } from 'react-admin';
 
 export const CourseEdit = () => {

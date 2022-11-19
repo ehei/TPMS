@@ -1,4 +1,4 @@
-import { Show, SimpleShowLayout, TextField } from 'react-admin';
+import {Show, SimpleShowLayout, TextField} from 'react-admin';
 
 export const InstructorShow = () => (
     <Show>

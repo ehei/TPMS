@@ -1,4 +1,4 @@
-import { Create, SimpleForm, TextInput, DateInput, BooleanInput } from 'react-admin';
+import {BooleanInput, Create, DateInput, SimpleForm, TextInput} from 'react-admin';
 
 export const AssessmentCreate = () => (
     <Create redirect={"list"}>

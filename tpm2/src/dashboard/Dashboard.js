@@ -1,9 +1,5 @@
-import React, {Component} from 'react';
-import { useState, useEffect } from 'react';
-import { useDataProvider } from 'react-admin';
-import { Title, useGetList } from 'react-admin';
-
-import { Card, CardContent, CardHeader, Grid } from '@mui/material';
+import React from 'react';
+import {useGetList} from 'react-admin';
 
 import DashboardLoading from './DashboardLoading'
 import DashboardLoaded from './DashboardLoaded'

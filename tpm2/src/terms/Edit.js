@@ -1,14 +1,4 @@
-import {
-    Edit,
-    SimpleForm,
-    TextInput,
-    DateInput,
-    ReferenceInput,
-    AutocompleteInput,
-    ReferenceArrayInput, SelectArrayInput
-} from 'react-admin';
-import {NoteCreate} from "../notes/Create";
-import {CourseCreate} from "../courses/Create";
+import {DateInput, Edit, ReferenceArrayInput, SelectArrayInput, SimpleForm, TextInput} from 'react-admin';
 
 export const TermEdit = () => (
     <Edit>

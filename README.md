@@ -4,15 +4,17 @@ WGU Capstone project - server - TPMS
 ## Setup
 
 - ./gradlew wrapper
-- ./gradlew buildDependents
 - ./gradlew build
+- cd ./tpm2
+- npm i
 
 
 ## To create the images:
 
-- docker build -t tpms-backend -f ./docker/backend .
-- docker build -t tpms-frontend -f ./docker/frontend ./tpm2
+- docker build -t tpms-backend -f .\Dockerfile.backend .
+- docker build -t tpms-frontend -f .\Dockerfile.frontend .
+
 
 ## To run the images
 
-- docker compose -f ./docker/docker-compose.yaml
+- docker-compose up

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Card, CardContent, CardHeader, Grid } from '@mui/material';
-import { withStyles } from '@material-ui/core/styles';
+import {Card, CardContent} from '@mui/material';
+import {withStyles} from '@material-ui/core/styles';
 
 const PlaceHolder = withStyles({
     root: {

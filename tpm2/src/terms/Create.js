@@ -1,13 +1,4 @@
-import {
-    Create,
-    SimpleForm,
-    TextInput,
-    DateInput,
-    ReferenceArrayInput,
-    ArrayInput,
-    AutocompleteInput,
-    SimpleFormIterator, SelectArrayInput
-} from 'react-admin';
+import {Create, DateInput, ReferenceArrayInput, SelectArrayInput, SimpleForm, TextInput} from 'react-admin';
 
 export const TermCreate = () => (
     <Create redirect={"list"}>

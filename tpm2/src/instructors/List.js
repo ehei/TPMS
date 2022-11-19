@@ -1,4 +1,4 @@
-import { Datagrid, List, TextField, EmailField } from 'react-admin';
+import {Datagrid, EmailField, List, TextField} from 'react-admin';
 
 export const InstructorList = () => (
     <List>

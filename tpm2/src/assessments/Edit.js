@@ -1,4 +1,4 @@
-import {DateInput, Edit, SimpleForm, TextInput, BooleanInput} from 'react-admin';
+import {BooleanInput, DateInput, Edit, SimpleForm, TextInput} from 'react-admin';
 
 export const AssessmentEdit = () => (
     <Edit>

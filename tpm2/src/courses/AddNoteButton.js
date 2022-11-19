@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-import { withStyles } from '@material-ui/core/styles';
-import { Button, useRecordContext } from 'react-admin';
+import {withStyles} from '@material-ui/core/styles';
+import {Button, useRecordContext} from 'react-admin';
 
 const styles = {
     button: {

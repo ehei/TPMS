@@ -1,4 +1,4 @@
-import { ReferenceArrayField, Datagrid, List, TextField, SingleFieldList, ChipField } from 'react-admin';
+import {Datagrid, List, TextField} from 'react-admin';
 
 export const TermList = () => (
     <List>
