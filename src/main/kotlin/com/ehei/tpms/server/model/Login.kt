@@ -2,6 +2,12 @@ package com.ehei.tpms.server.model
 
 import java.io.Serializable
 
+/**
+ * Login
+ *
+ * @property username
+ * @property password
+ */
 class Login(var username: String? = null,
             var password: String? = null
 ): Serializable {

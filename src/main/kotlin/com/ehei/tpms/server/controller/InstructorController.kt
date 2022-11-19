@@ -10,12 +10,24 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
+/**
+ * Instructor controller
+ *
+ * @property repository
+ */
 @Controller
 @RequestMapping(path = ["api/instructors"])
 @CrossOrigin("*")
 class InstructorController(
     @Autowired val repository: InstructorRepository
 ) {
+    /**
+     * Get
+     *
+     * @param token
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -34,6 +46,12 @@ class InstructorController(
         }
     }
 
+    /**
+     * Get all
+     *
+     * @param token
+     * @return
+     */
     @GetMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -47,6 +65,13 @@ class InstructorController(
         return createListResponse(found)
     }
 
+    /**
+     * Create
+     *
+     * @param token
+     * @param instructor
+     * @return
+     */
     @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -62,6 +87,14 @@ class InstructorController(
         return ResponseEntity.ok(savedInstructor)
     }
 
+    /**
+     * Update
+     *
+     * @param token
+     * @param id
+     * @param instructorToUpdate
+     * @return
+     */
     @PutMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -96,6 +129,13 @@ class InstructorController(
         return ResponseEntity.ok(savedInstructor)
     }
 
+    /**
+     * Delete
+     *
+     * @param token
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun delete(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long):

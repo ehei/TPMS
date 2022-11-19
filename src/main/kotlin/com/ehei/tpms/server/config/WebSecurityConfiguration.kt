@@ -8,10 +8,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
 
+/**
+ * Open endpoint security configuration
+ *
+ */
 @Configuration
 @EnableWebSecurity
 class OpenEndpointSecurityConfiguration {
 
+    /**
+     * Configure
+     *
+     * @param http
+     * @return
+     */
     @Bean
     fun configure(http: HttpSecurity): SecurityFilterChain =
         http

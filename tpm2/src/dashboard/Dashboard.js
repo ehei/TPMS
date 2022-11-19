@@ -1,5 +1,5 @@
 import React from 'react';
-import {useGetList} from 'react-admin';
+import {useGetList, useGetMany} from 'react-admin';
 
 import DashboardLoading from './DashboardLoading'
 import DashboardLoaded from './DashboardLoaded'
@@ -8,7 +8,7 @@ import DashboardEmpty from './DashboardEmpty'
 export const Dashboard = () => {
 
     const { data, total, isLoading, error } = useGetList(
-        'terms',
+        'fullTerms',
         {
             pagination: { page: 1, perPage: 5},
             sort: { field: 'id', order: 'ASC'}
@@ -19,10 +19,11 @@ export const Dashboard = () => {
 
     if (total === 0) return <DashboardEmpty />;
 
+    console.log("terms[0]");
     console.log(data[0]);
 
     return (<DashboardLoaded items={data}
                             total={total}
-                            handleLoadMore={ () => {} }
+                            handleLoadMore={ () => {}}
     />);
 };

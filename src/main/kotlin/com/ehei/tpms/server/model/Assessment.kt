@@ -3,6 +3,16 @@ package com.ehei.tpms.server.model
 import java.io.Serializable
 import javax.persistence.*
 
+/**
+ * Assessment
+ *
+ * @property id
+ * @property title
+ * @property startDate
+ * @property endDate
+ * @property performance
+ * @property userId
+ */
 @Entity
 class Assessment (
     @javax.persistence.Id

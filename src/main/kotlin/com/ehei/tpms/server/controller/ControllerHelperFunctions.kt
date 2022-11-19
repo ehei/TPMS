@@ -10,6 +10,12 @@ private val exposeHeader = "Access-Control-Expose-Headers"
 
 val objectMapper = ObjectMapper()
 
+/**
+ * Get valid token
+ *
+ * @param token
+ * @return
+ */
 fun getValidToken(token: String?): User =
     when {
         token.isNullOrBlank() -> UNKNOWN_USER
@@ -20,6 +26,13 @@ fun getValidToken(token: String?): User =
         }
     }
 
+/**
+ * Is authorized
+ *
+ * @param token
+ * @param id
+ * @return
+ */
 fun isAuthorized(token: String?, id: Long?): Boolean {
 
     val user = getValidToken(token)
@@ -29,8 +42,21 @@ fun isAuthorized(token: String?, id: Long?): Boolean {
     return user.id == id
 }
 
+/**
+ * User id
+ *
+ * @param token
+ * @return
+ */
 fun userId(token: String?): Long = getValidToken(token).id!!
 
+/**
+ * Create list response
+ *
+ * @param T
+ * @param findAll
+ * @return
+ */
 fun <T> createListResponse(findAll: List<T>) : ResponseEntity<List<T>> =
     ResponseEntity.ok()
         .header(countHeader, "" + findAll.size)

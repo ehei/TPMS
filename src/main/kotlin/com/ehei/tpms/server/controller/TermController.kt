@@ -10,12 +10,24 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
+/**
+ * Term controller
+ *
+ * @property repository
+ */
 @Controller
 @RequestMapping(path = ["api/terms"])
 @CrossOrigin("*")
 class TermController(
     @Autowired val repository: TermRepository
 ) {
+    /**
+     * Get
+     *
+     * @param token
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @ResponseBody
     @ResponseStatus(OK)
@@ -34,6 +46,12 @@ class TermController(
         }
     }
 
+    /**
+     * Get all
+     *
+     * @param token
+     * @return
+     */
     @GetMapping
     @ResponseBody
     @ResponseStatus(OK)
@@ -47,6 +65,13 @@ class TermController(
         return createListResponse(found)
     }
 
+    /**
+     * Create
+     *
+     * @param token
+     * @param term
+     * @return
+     */
     @PostMapping
     @ResponseBody
     @ResponseStatus(OK)
@@ -62,6 +87,14 @@ class TermController(
         return ResponseEntity.ok(savedTerm)
     }
 
+    /**
+     * Update
+     *
+     * @param token
+     * @param id
+     * @param termToUpdate
+     * @return
+     */
     @PutMapping("/{id}")
     @ResponseBody
     @ResponseStatus(OK)
@@ -98,6 +131,13 @@ class TermController(
         return ResponseEntity.ok(savedTerm)
     }
 
+    /**
+     * Delete
+     *
+     * @param token
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(OK)
     fun delete(@RequestHeader("Authorization") token: String?, @PathVariable(name = "id") id: Long):

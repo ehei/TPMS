@@ -3,6 +3,19 @@ package com.ehei.tpms.server.model
 import java.io.Serializable
 import javax.persistence.*
 
+/**
+ * Course
+ *
+ * @property id
+ * @property title
+ * @property status
+ * @property startDate
+ * @property endDate
+ * @property instructor_ids
+ * @property assessment_ids
+ * @property notes
+ * @property userId
+ */
 @Entity
 class Course(
 

@@ -10,12 +10,24 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
+/**
+ * Course controller
+ *
+ * @property repository
+ */
 @Controller
 @RequestMapping(path = ["api/courses"])
 @CrossOrigin("*")
 class CourseController(
     @Autowired val repository: CourseRepository
 ) {
+    /**
+     * Get
+     *
+     * @param token
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -34,6 +46,12 @@ class CourseController(
         }
     }
 
+    /**
+     * Get all
+     *
+     * @param token
+     * @return
+     */
     @GetMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -47,6 +65,13 @@ class CourseController(
         return createListResponse(found)
     }
 
+    /**
+     * Create
+     *
+     * @param token
+     * @param course
+     * @return
+     */
     @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -62,6 +87,14 @@ class CourseController(
         return ResponseEntity.ok(savedCourse)
     }
 
+    /**
+     * Update
+     *
+     * @param token
+     * @param id
+     * @param courseToUpdate
+     * @return
+     */
     @PutMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -99,6 +132,13 @@ class CourseController(
         return ResponseEntity.ok(savedCourse)
     }
 
+    /**
+     * Delete
+     *
+     * @param token
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun delete(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long):

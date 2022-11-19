@@ -3,8 +3,21 @@ package com.ehei.tpms.server.model
 import java.io.Serializable
 import javax.persistence.*
 
+/**
+ * Unknown User - used in place of null checks
+ */
 val UNKNOWN_USER = User(id = -2, role = "unknown", fullName = "UNKNOWN USER")
 
+/**
+ * User
+ *
+ * @property id
+ * @property username
+ * @property password
+ * @property role
+ * @property fullName
+ * @constructor Create User
+ */
 @Entity
 @Table(name = "tpms_users")
 class User(

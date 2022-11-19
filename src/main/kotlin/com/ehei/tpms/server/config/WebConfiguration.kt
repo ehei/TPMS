@@ -9,11 +9,20 @@ import org.springframework.web.filter.CorsFilter
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 
+/**
+ * Web configuration
+ *
+ */
 @Configuration
 @EnableWebMvc
 @EnableSpringDataWebSupport
 class WebConfiguration {
 
+    /**
+     * Cors filter
+     *
+     * @return
+     */
     @Bean
     fun corsFilter(): CorsFilter {
         val source = UrlBasedCorsConfigurationSource()

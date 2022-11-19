@@ -9,6 +9,11 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Authentication controller
+ *
+ * @property userRepository
+ */
 @Controller
 @RequestMapping(path = ["authentication"])
 @CrossOrigin("*")
@@ -16,6 +21,12 @@ class AuthenticationController(
     @Autowired val userRepository: UserRepository
 ) {
 
+    /**
+     * Authenticate
+     *
+     * @param login
+     * @return
+     */
     @PostMapping
     @ResponseBody
     fun authenticate(@RequestBody login: Login): ResponseEntity<User>

@@ -10,12 +10,24 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
+/**
+ * Assessment controller
+ *
+ * @property repository
+ */
 @Controller
 @RequestMapping(path = ["api/assessments"])
 @CrossOrigin("*")
 class AssessmentController(
     @Autowired val repository: AssessmentRepository
 ) {
+    /**
+     * Get
+     *
+     * @param token
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -34,6 +46,12 @@ class AssessmentController(
         }
     }
 
+    /**
+     * Get all
+     *
+     * @param token
+     * @return
+     */
     @GetMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -47,6 +65,13 @@ class AssessmentController(
         return createListResponse(found)
     }
 
+    /**
+     * Create
+     *
+     * @param token
+     * @param assessment
+     * @return
+     */
     @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -62,6 +87,14 @@ class AssessmentController(
         return ResponseEntity.ok(saved)
     }
 
+    /**
+     * Update
+     *
+     * @param token
+     * @param id
+     * @param assessmentToUpdate
+     * @return
+     */
     @PutMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -97,6 +130,13 @@ class AssessmentController(
         return ResponseEntity.ok(savedAssessment)
     }
 
+    /**
+     * Delete
+     *
+     * @param token
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun delete(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long):

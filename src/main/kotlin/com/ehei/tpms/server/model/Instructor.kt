@@ -3,6 +3,15 @@ package com.ehei.tpms.server.model
 import java.io.Serializable
 import javax.persistence.*
 
+/**
+ * Instructor
+ *
+ * @property id
+ * @property name
+ * @property phoneNumber
+ * @property emailAddress
+ * @property userId
+ */
 @Entity
 class Instructor(
     @javax.persistence.Id

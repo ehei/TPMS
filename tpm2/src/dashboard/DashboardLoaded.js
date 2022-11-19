@@ -36,20 +36,23 @@ const DashboardLoadedView = ({
                 width={"100%"}
             >
                 {
-                    items.map(term => (
-                    <Card sx={{ minWidth: 275, width: 500 }} key={term.id}>
-                        <CardContent>
-                            <Typography variant="h2" color="secondary" gutterBottom>
-                                { term.title }
-                            </Typography>
-                            <Typography variant="h5" component="div">
-                                Start Date: { term.startDate }
-                                <br />
-                                End Date: { term.endDate }
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                ))
+                    items.map(term => {
+
+                        return (
+                            <Card sx={{minWidth: 275, width: 500}} key={term.id}>
+                                <CardContent>
+                                    <Typography variant="h2" color="secondary" gutterBottom>
+                                        {term.title}
+                                    </Typography>
+                                    <Typography variant="h5" component="div">
+                                        Start Date: {term.startDate}
+                                        <br/>
+                                        End Date: {term.endDate}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        );
+                    })
             }
             <div></div>
 

@@ -1,22 +1,6 @@
 package com.ehei.tpms.server.model
 
-import java.io.Serializable
-import javax.persistence.*
-
-/**
- * Term
- *
- * @property id
- * @property title
- * @property startDate
- * @property endDate
- * @property course_ids
- * @property userId
- */
-@Entity
-class Term(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+data class FullTerm (
     var id: Long? = null,
 
     var title: String? = null,
@@ -25,22 +9,21 @@ class Term(
 
     var endDate: String? = null,
 
-    @ElementCollection
-    var course_ids: MutableList<Long> = mutableListOf(),
+    var courses: MutableList<FullCourse> = mutableListOf(),
 
-    var userId: Long? = null
+    var user: User? = null
+) {
 
-): Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is Term) return false
+        if (other !is FullTerm) return false
 
         if (id != other.id) return false
         if (title != other.title) return false
         if (startDate != other.startDate) return false
         if (endDate != other.endDate) return false
-        if (course_ids != other.course_ids) return false
-        if (userId != other.userId) return false
+        if (courses != other.courses) return false
+        if (user != other.user) return false
 
         return true
     }
@@ -50,9 +33,8 @@ class Term(
         result = 31 * result + (title?.hashCode() ?: 0)
         result = 31 * result + (startDate?.hashCode() ?: 0)
         result = 31 * result + (endDate?.hashCode() ?: 0)
-        result = 31 * result + course_ids.hashCode()
-        result = 31 * result + (userId?.hashCode() ?: 0)
+        result = 31 * result + courses.hashCode()
+        result = 31 * result + (user?.hashCode() ?: 0)
         return result
     }
-
 }
