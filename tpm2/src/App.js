@@ -25,8 +25,8 @@ import {NoteEdit} from "./notes/Edit";
 import {NoteCreate} from "./notes/Create";
 import authProvider from "./authentication/authProvider";
 import {Dashboard} from "./dashboard/Dashboard";
-import {FulltermList} from "./FulltermList";
-import {FulltermShow} from "./FulltermShow";
+import {FulltermList} from "./dashboard/FulltermList";
+import {FulltermShow} from "./dashboard/FulltermShow";
 
 const fetchJson = (url, options = {}) => {
     let token = localStorage.getItem('token');
@@ -51,7 +51,6 @@ const App = () => (
         <Resource name="courses" list={CourseList} show={CourseShow} edit={CourseEdit} create={CourseCreate}
                   recordRepresentation="title"/>
         <Resource name="notes" recordRepresentation="text" show={NoteShow} edit={NoteEdit} create={NoteCreate}/>
-        <Resource name={"fullTerms"} list={FulltermList} show={FulltermShow} />
     </Admin>
 );
 
