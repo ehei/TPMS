@@ -9,12 +9,12 @@ WGU Capstone project - server - TPMS
 - npm i
 
 
-## To create the images:
+## To create the images individually:
 
 - docker build -t tpms-backend -f .\Dockerfile.backend .
 - docker build -t tpms-frontend -f .\Dockerfile.frontend .
 
 
-## To run the images
+## To run the images (this will also build the images)
 
 - docker-compose up
