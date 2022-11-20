@@ -1,5 +1,17 @@
 package com.ehei.tpms.server.model
 
+/**
+ * Full term
+ *
+ * Representation of the term with all sub items
+ *
+ * @property id
+ * @property title
+ * @property startDate
+ * @property endDate
+ * @property courses
+ * @property user
+ */
 data class FullTerm (
     var id: Long? = null,
 

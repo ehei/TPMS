@@ -1,5 +1,19 @@
 package com.ehei.tpms.server.model
 
+/**
+ * Full course
+ *
+ * Representation of the course with all sub items
+ *
+ * @property id
+ * @property title
+ * @property status
+ * @property startDate
+ * @property endDate
+ * @property instructors
+ * @property assessments
+ * @property notes
+ */
 data class FullCourse(
     var id: Long? = null,
 
