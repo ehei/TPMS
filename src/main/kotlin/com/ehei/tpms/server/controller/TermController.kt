@@ -33,17 +33,13 @@ class TermController(
     @ResponseStatus(OK)
     fun get(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long): ResponseEntity<Term> {
 
-        try {
-            val findById = repository.findById(id)
+        val findById = repository.findById(id)
 
-            if (findById.isEmpty || ! isAuthorized(token, findById.get().userId)) {
-                return ResponseEntity.notFound().build()
-            }
-
-            return ResponseEntity.ok().body(findById.get())
-        } catch (noSuchElement: NoSuchElementException) {
+        if (findById.isEmpty || ! isAuthorized(token, findById.get().userId)) {
             return ResponseEntity.notFound().build()
         }
+
+        return ResponseEntity.ok().body(findById.get())
     }
 
     /**
@@ -102,28 +98,16 @@ class TermController(
 
         val found = repository.findById(id)
 
-        val user = getValidToken(token)
-        if (found.isEmpty || user == UNKNOWN_USER || user.id != found.get().userId)
+        if (found.isEmpty || ! isAuthorized(token, found.get().userId))
             return ResponseEntity.notFound().build()
-
-        val term = found.get()
 
         val updated = Term(
             id = id,
-            title = when (termToUpdate.title == null) {
-                true -> term.title
-                else -> termToUpdate.title
-            },
-            startDate = when(termToUpdate.startDate == null) {
-                true -> term.startDate
-                else -> termToUpdate.startDate
-            },
-            endDate = when(termToUpdate.endDate == null) {
-                true -> term.endDate
-                else -> termToUpdate.endDate
-            },
+            title = termToUpdate.title,
+            startDate = termToUpdate.startDate,
+            endDate = termToUpdate.endDate,
             course_ids = termToUpdate.course_ids,
-            userId = user.id
+            userId = termToUpdate.id
         )
 
         val savedTerm = repository.save(updated)

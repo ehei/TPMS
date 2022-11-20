@@ -111,4 +111,62 @@ class FullTermsControllerTest{
         assertThat(foundTerms).contains(fullTerm2)
         assertThat(foundTerms).contains(fullTerm3)
     }
+
+    @Test
+    fun `toFullTerm defaults to UnknownUser if user with id is not found`() {
+
+        term.userId = 9129;
+
+        val fullTerm = fullTermsController.toFullTerm(term, mutableListOf(), mutableListOf(), mutableListOf())
+
+        assertThat(fullTerm.user).isSameAs(UNKNOWN_USER)
+    }
+
+    @Test
+    fun `toFullTerm if course list is empty, then fullTerm course list will be empty`() {
+
+        val fullTerm = fullTermsController.toFullTerm(term, mutableListOf(), mutableListOf(), mutableListOf())
+
+        assertThat(fullTerm.courses).isEmpty()
+    }
+
+    @Test
+    fun `toFullTerm if course list is not empty but no ids match, then fullTerm course list will be empty`() {
+
+        term.course_ids.clear()
+        term.course_ids.add(44)
+        term.course_ids.add(88)
+        term.course_ids.add(122)
+        val fullTerm = fullTermsController.toFullTerm(
+            term,
+            mutableListOf(course, course2, course3),
+            mutableListOf(instructor, instructor2),
+            mutableListOf(assessment, assessment2))
+
+        assertThat(fullTerm.courses).isEmpty()
+    }
+
+    @Test
+    fun `toFullCourse if instructors or assessments are empty, course lists will remain empty`() {
+
+        val fullCourse = fullTermsController.toFullCourse(course, mutableListOf(), mutableListOf())
+
+        assertThat(fullCourse.instructors).isEmpty()
+        assertThat(fullCourse.assessments).isEmpty()
+    }
+
+    @Test
+    fun `toFullCourse if instructors and assessments are not empty but ids do not match, course lists will remain empty`() {
+
+        course.assessment_ids.clear()
+        course.assessment_ids.add(9481)
+        course.instructor_ids.clear()
+        course.instructor_ids.add(123)
+        course.instructor_ids.add(423)
+
+        val fullCourse = fullTermsController.toFullCourse(course, mutableListOf(), mutableListOf())
+
+        assertThat(fullCourse.instructors).isEmpty()
+        assertThat(fullCourse.assessments).isEmpty()
+    }
 }

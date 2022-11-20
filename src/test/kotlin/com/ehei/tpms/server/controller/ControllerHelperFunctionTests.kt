@@ -54,6 +54,14 @@ class ControllerHelperFunctionTests {
     }
 
     @Test
+    fun `if token is null or blank return UNKNOWN_USER`() {
+
+        assertThat(getValidToken(null)).isEqualTo(UNKNOWN_USER)
+        assertThat(getValidToken("")).isEqualTo(UNKNOWN_USER)
+        assertThat(getValidToken("   ")).isEqualTo(UNKNOWN_USER)
+    }
+
+    @Test
     fun `if token is null or blank return -1`() {
 
         assertThat(userId(null)).isEqualTo(UNKNOWN_USER.id)

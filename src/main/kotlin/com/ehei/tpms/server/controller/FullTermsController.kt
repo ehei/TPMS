@@ -23,33 +23,6 @@ class FullTermsController(
     val userRepository: UserRepository
 ) {
     /**
-     * Get
-     *
-     * @param token
-     * @param id
-     * @return
-     */
-    @GetMapping("/{id}")
-    @ResponseBody
-    @ResponseStatus(OK)
-    fun get(@RequestHeader("Authorization") token: String, @PathVariable(name = "id") id: Long): ResponseEntity<FullTerm> {
-
-        val found = termRepository.findById(id)
-
-        if (found.isEmpty) {
-            return ResponseEntity.notFound().build()
-        }
-
-        val foundCourses = courseRepository.findAll()
-        val foundInstructors = instructorRepository.findAll()
-        val foundAssessments = assessmentRepository.findAll()
-
-        val fullTerm = toFullTerm(found.get(), foundCourses, foundInstructors, foundAssessments)
-
-        return ResponseEntity.ok(fullTerm)
-    }
-
-    /**
      * Get all
      *
      * @param token
@@ -72,7 +45,7 @@ class FullTermsController(
         return createListResponse(fullTerms)
     }
 
-    private fun toFullTerm(
+    fun toFullTerm(
         term: Term,
         foundCourses: MutableList<Course>,
         foundInstructors: MutableList<Instructor>,
@@ -87,32 +60,25 @@ class FullTermsController(
         else
             fullTerm.user = UNKNOWN_USER
 
-        if (foundCourses.isNotEmpty()) {
-            val filteredCourses = foundCourses.filter { it.id in term.course_ids }
-            val map: List<FullCourse> = filteredCourses.map { toFullCourse(it, foundInstructors, foundAssessments) }
-            fullTerm.courses.addAll(map)
-        }
+        val filteredCourses = foundCourses.filter { it.id in term.course_ids }
+        val map: List<FullCourse> = filteredCourses.map { toFullCourse(it, foundInstructors, foundAssessments) }
+        fullTerm.courses.addAll(map)
 
         return fullTerm
     }
 
-}
+    fun toFullCourse(course: Course, foundInstructors: MutableList<Instructor>, foundAssessments: MutableList<Assessment>): FullCourse
+    {
+        val fullCourse = FullCourse.fromCourse(course)
 
-fun toFullCourse(course: Course, foundInstructors: MutableList<Instructor>, foundAssessments: MutableList<Assessment>): FullCourse
-{
-    val fullCourse = FullCourse.fromCourse(course)
-
-    if (foundInstructors.isNotEmpty()) {
         foundInstructors.filter { it.id in course.instructor_ids }.forEach {
             fullCourse.instructors.add(it)
         }
-    }
 
-    if (foundAssessments.isNotEmpty()) {
         foundAssessments.filter { it.id in course.assessment_ids }.forEach {
             fullCourse.assessments.add(it)
         }
-    }
 
-    return fullCourse
+        return fullCourse
+    }
 }

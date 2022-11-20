@@ -92,6 +92,9 @@ tasks.pitest {
 			"com.ehei.tpms.server.config.*",
 			"com.ehei.tpms.server.model.*",
 			"com.ehei.tpms.server.api.*",
+			"com.ehei.tpms.server.controller.AssessmentController",
+			"com.ehei.tpms.server.controller.CourseController",
+			"com.ehei.tpms.server.controller.InstructorController"
 		)
 	)
 	outputFormats.set(setOf("XML", "HTML"))

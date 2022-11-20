@@ -8,10 +8,8 @@ import org.assertj.core.api.Assertions.assertThat
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.ArgumentCaptor
+import org.mockito.kotlin.*
 import org.springframework.http.HttpStatus
 import java.util.*
 
@@ -20,8 +18,10 @@ class TermControllerTest {
     private lateinit var termRepository: TermRepository
     private lateinit var termController: TermController
 
-    private val user = User(1, "a", "b", "c")
+    private val user = User(1, "a", "b", "user")
+    private val user2 = User(200, "a", "b", "guest")
     private lateinit var userAsString: String
+    private lateinit var user2AsString: String
 
     @BeforeEach
     fun setUp() {
@@ -30,6 +30,7 @@ class TermControllerTest {
         termController = TermController(termRepository)
 
         userAsString = ObjectMapper().writeValueAsString(user)
+        user2AsString = ObjectMapper().writeValueAsString(user2)
     }
 
     @Test
@@ -78,6 +79,7 @@ class TermControllerTest {
 
         verify(termRepository).save(term)
 
+        assertThat(term.userId).isEqualTo(term1.userId)
         assertThat(createdTerm).isEqualTo(term1)
     }
 
@@ -85,15 +87,23 @@ class TermControllerTest {
     fun `updates term`() {
         val term1 = Term(id = 1, title = "third updated", startDate = "2022/12/31", endDate = "2023/01/30", userId = user.id)
 
+        val captor = ArgumentCaptor.forClass(Term::class.java)
         whenever(termRepository.findById(1L)).thenReturn(Optional.of(term1))
         whenever(termRepository.save(any<Term>())).thenReturn(term1)
 
         val updatedTerm: Term = termController.update(userAsString,1, term1).body!!
 
-        assertThat(updatedTerm).isNotNull
+        assertThat(updatedTerm.title).isEqualTo(term1.title)
+        assertThat(updatedTerm.startDate).isEqualTo(term1.startDate)
+        assertThat(updatedTerm.endDate).isEqualTo(term1.endDate)
+        assertThat(updatedTerm.userId).isEqualTo(term1.userId)
 
         verify(termRepository).findById(1L)
-        verify(termRepository).save(any<Term>())
+        verify(termRepository).save(captor.capture())
+
+        assertThat(captor.value.title).isEqualTo(term1.title)
+        assertThat(captor.value.startDate).isEqualTo(term1.startDate)
+        assertThat(captor.value.endDate).isEqualTo(term1.endDate)
     }
 
     @Test
@@ -101,6 +111,15 @@ class TermControllerTest {
         val term1 = Term(id = 1, title = "third updated", startDate = "2022/12/31", endDate = "2023/01/30", userId = 51223)
 
         whenever(termRepository.findById(1)).thenReturn(Optional.of(term1))
+
+        assertThat(termController.update(userAsString,1, term1).statusCodeValue).isEqualTo(HttpStatus.NOT_FOUND.value())
+    }
+
+    @Test
+    fun `returns not found if term is not found`() {
+        val term1 = Term(id = 1, title = "third updated", startDate = "2022/12/31", endDate = "2023/01/30", userId = 51223)
+
+        whenever(termRepository.findById(1)).thenReturn(Optional.ofNullable(null))
 
         assertThat(termController.update(userAsString,1, term1).statusCodeValue).isEqualTo(HttpStatus.NOT_FOUND.value())
     }
@@ -126,5 +145,34 @@ class TermControllerTest {
 
         assertThat(termController.delete(userAsString, 1).statusCodeValue)
             .isEqualTo(HttpStatus.NOT_FOUND.value())
+    }
+
+    @Test
+    fun `if bad token is passed in, do not create a new term`() {
+        val term = Term(id = null, title = "third", startDate = "2022/12/31", endDate = "2023/01/30")
+        val term1 = Term(id = 1, title = "third", startDate = "2022/12/31", endDate = "2023/01/30", userId = user.id)
+        whenever(termRepository.save(term)).thenReturn(term1)
+
+        val response = termController.create("", term)
+
+        assertThat(response.statusCodeValue).isEqualTo(HttpStatus.BAD_REQUEST.value())
+        verify(termRepository, never()).save(term)
+    }
+
+    @Test
+    fun `if user is not found, do not return a term`() {
+        val term = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30", userId = 23)
+        whenever(termRepository.findById(1)).thenReturn(Optional.of(term))
+
+        assertThat(termController.get(user2AsString, 1).statusCodeValue).isEqualTo(HttpStatus.NOT_FOUND.value())
+    }
+
+    @Test
+    fun `if user is found but does not have the correct role, do not return a term`() {
+        val term = Term(id = 1, title = "First", startDate = "2022/12/31", endDate = "2023/01/30", userId = user2.id)
+
+        whenever(termRepository.findById(1)).thenReturn(Optional.of(term))
+
+        assertThat(termController.get(user2AsString, 1).statusCodeValue).isEqualTo(HttpStatus.NOT_FOUND.value())
     }
 }
