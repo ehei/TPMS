@@ -7,6 +7,7 @@ WGU Capstone project - server - TPMS
 - ./gradlew build
 - cd ./tpm2
 - npm i
+- cd ..
 
 
 ## To create the images individually:
